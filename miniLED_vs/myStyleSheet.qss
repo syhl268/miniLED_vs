@@ -1,0 +1,38 @@
+QStackedWidget, QLabel, QRadioButton,QCheckBox, QGroupBox, QStatusBar, QToolButton,QComboBox, QDialog
+{
+    background-color: #AAAAAA;
+    font-family: "Segoe UI";
+}
+QPushButton
+{
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(125,130,200, 255), stop:0.539773 rgba(160, 192, 255, 255), stop:0.994318 rgba(125,130,200, 255));
+    height: 30px;
+    font-size: 15px;
+    text-align: center;
+    text-decoration:none;
+    outline:none;
+    border-radius: 5px;
+}
+QPushButton:hover
+{
+    background-color: rgba(146,152,234,255);
+}
+QPushButton:pressed
+{
+    background-color: rgba(120,120,120,120);
+}
+
+QWidget#direcselector
+{
+	background-color: #AAAAAAAA;
+	border:4px solid black;
+	border-style:inset;
+	padding:1px 18px 1px 3px;
+	min-width:100px;
+}
+QGroupBox#groupBox_7
+{
+	border:2px solid;
+	border-style:inset;
+	content: white;
+}
