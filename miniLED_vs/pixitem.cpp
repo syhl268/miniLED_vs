@@ -10,7 +10,7 @@ PixItem::PixItem()
 
 PixItem::PixItem(QPixmap *pixmap)
 {
-    pix=*pixmap;
+    pix=pixmap;
     setAcceptDrops(true);
     m_scaleValue=0;
     m_isMove=false;
@@ -20,14 +20,14 @@ PixItem::PixItem(QPixmap *pixmap)
 QRectF PixItem::boundingRect() const
 {
     //return QRectF(-pix.width()/2,-pix.height()/2,pix.width(),pix.height());
-	return QRectF(0,0, pix.width(), pix.height());
+	return QRectF(0,0, pix->width(), pix->height());
 }
 
 void PixItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	QMutex mutex;
 	mutex.lock();
-    painter->drawPixmap(0,0,pix);
+    painter->drawPixmap(0,0,*pix);
 	mutex.unlock();
 }
 
@@ -124,9 +124,34 @@ void PixItem::setPixmap(QPixmap *pixmap)
 {
 	QMutex mutex;
 	mutex.lock();
-    this->pix=*pixmap;
+    this->pix=pixmap;
 	mutex.unlock();
     this->update();
+}
+
+QPixmap PixItem::getPixmap()
+{
+	//QMutex mutex;
+	//mutex.lock();
+	//QPixmap pmp = this->pix->copy(this->pix->rect());
+	//mutex.unlock();
+	return *this->pix;
+}
+
+void PixItem::setDataCpy(uchar * data, int width, int height)
+{
+	if (this->data = nullptr)this->data = new uchar[width*height];
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			this->data[i*width + j] = data[i*width + j];
+		}
+	}
+}
+
+uchar * PixItem::getData(int & width, int & height)
+{
+	
+	return this->data;
 }
 
 void PixItem::on_CameraReceived(QPixmap* mPixmap)

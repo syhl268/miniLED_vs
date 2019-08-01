@@ -19,6 +19,7 @@ protected:
 
 signals:
 	void direcNow(int index);
+
 private:
 	QPixmap image[4];
 	QRect rect[4];
@@ -26,4 +27,5 @@ private:
 	int selectItem;
 	int gap, side, padding, begin;
 	void drawSelection(QPainter& painter, QRect rect, QColor bgColor, QPixmap pixmap);
+
 };

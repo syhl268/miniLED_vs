@@ -23,7 +23,8 @@ class ImageAlgorithm
 {
 
 public:
-	static bool GL_compensation(IN QImage &imgSrc,IN uchar GL,IN float gamma, OUT QImage &imgOut, OUT int &target);
-	static bool Curvefit22(IN QImage &imgSrc1, IN uchar GL1, IN QImage &imgSrc2, IN uchar GL2, OUT IntArray &a, OUT IntArray &b);
+	//GL=100 gamma=2.8;
+	static bool GL_compensation(IN int* imgSrc,IN int width,IN int height,IN uchar GL,IN float gamma, OUT float *imgOut, OUT int &target);
+	static bool Curvefit22(IN int* imgSrc1,IN int width,IN int height, IN uchar GL1, IN int *imgSrc2, IN uchar GL2, OUT IntArray &a, OUT IntArray &b);
 	~ImageAlgorithm();
 };

@@ -37,11 +37,15 @@ public:
     int getScaleValue() const;
     void setScaleValue(const int &);
     void setPixmap(QPixmap *pixmap);
+	QPixmap getPixmap();
+	void setDataCpy(uchar* data,int width,int height);
+	uchar* getData(int &width,int &height);
 public slots:
 	void on_CameraReceived(QPixmap* mPixmap);
 private:
     qreal m_scaleValue;
-    QPixmap pix;
+    QPixmap *pix;
+	uchar *data;
     int m_zoomState;
     bool m_isMove;
     QPointF m_startPos;
