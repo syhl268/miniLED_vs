@@ -17,8 +17,6 @@
 PixItem *m_pixItem;
 PixItem *m_pixItem1;
 
-QPictureBox *pbx1, *pbx2;
-
 Camera* camera;
 bool isSnap = false;
 
@@ -33,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	qDebug() << "timer start:" << mytime.elapsed() << "ms" << endl;
 #endif // _DEBUG
 
-    this->loadStyleSheet(":/miniLED_vs/myStyleSheet.qss");
+	//this->loadStyleSheet(":/miniLED_vs/myStyleSheet.qss");
+	this->loadStyleSheet(":/miniLED_vs/QSS-master/ElegantDark.qss");
     //QLayout* layout_Pic=new QLayout(widget3);
 	ui->stackedWidget->setCurrentIndex(0);
 
@@ -41,7 +40,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_Aperture->setValidator(new QRegExpValidator(QRegExp("[0-9]+\.+[0-9]+$")));
 
     ui->statusBar->showMessage("就绪",3000);
-	
 
 	/*
     QGraphicsScene *m_graphicsScene=new QGraphicsScene;
@@ -68,14 +66,28 @@ MainWindow::MainWindow(QWidget *parent) :
     m_graphicsView1->setMinimumSize(ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
     ui->verticalLayout_12->addWidget(m_graphicsView1);
 	*/
-	pbx1 = new QPictureBox(this);
-	pbx2 = new QPictureBox(this);
-	pbx2->setIsDrawMarkPoints(true);
-	QPixmap *pixmap = new QPixmap(":/miniLED_vs/CachedImage_1920_1080_POS3.jpg");
-	pbx1->setPixmap(pixmap);
-	ui->verticalLayout_11->addWidget(pbx1);
-	ui->verticalLayout_12->addWidget(pbx2);
+	QPixmap *pixmap1 = new QPixmap(":/miniLED_vs/pic/图片1.png");
+	QPixmap *pixmap2 = new QPixmap(":/miniLED_vs/pic/图片2.png");
+	ui->pictureBox_Capture->setPixmap(pixmap2);
+	ui->pictureBox_CameraShow->setPixmap(pixmap1);
+	QPixmap icon1(":/pic/pic/d1.png");
+	QPixmap icon2(":/pic/pic/d2.png");
+	QPixmap icon3(":/pic/pic/d3.png");
+	QPixmap icon4(":/pic/pic/d4.png");
+	const QSize iconSize(60, 60);
+	ui->pushButton_Direction1->setIcon(icon1);
+	ui->pushButton_Direction1->setIconSize(iconSize);
 
+	ui->pushButton_Direction2->setIcon(icon2);
+	ui->pushButton_Direction2->setIconSize(iconSize);
+
+	ui->pushButton_Direction3->setIcon(icon3);
+	ui->pushButton_Direction3->setIconSize(iconSize);
+	
+	ui->pushButton_Direction4->setIcon(icon4);
+	ui->pushButton_Direction4->setIconSize(iconSize);
+	
+	ui->pictureBox_Capture->setIsDrawMarkPoints(true);
     camera=new Camera();
     //connect(camera,SIGNAL(cameraImgReady(QPixmap*)),this->m_pixItem,SLOT(on_CameraReceived(QPixmap*)));
 	camera->QSetCallback(mCameraCallback);
@@ -126,6 +138,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	myModel = new MyTableModel(this,QColor(255,0,0),globalVar.ScreenWidth,globalVar.ScreenHeight,globalVar.arrayW);
 	selectModle = new QItemSelectionModel(myModel);
 	bool isCon=connect(selectModle, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(on_tableView_CurrentChanged(QModelIndex, QModelIndex)));
+	qDebug() << ui->pushButton_Red->isCheckable();
 	//调试算法时使用过的
 #if 0
 	qDebug() << isCon << endl;
@@ -291,12 +304,12 @@ void MainWindow::on_pushButton_ConnectCamera_clicked()
 
 void mCameraCallback(byte *imgData, int width, int height)
 {
-	pbx1->setData(imgData,width,height);
-	if (isSnap) {
-		globalVar.snapData = imgData;
-		pbx2->setData(imgData, width, height);
-		isSnap = false;
-	}
+	//pbx1->setData(imgData,width,height);
+	//if (isSnap) {
+	//	globalVar.snapData = imgData;
+	//	pbx2->setData(imgData, width, height);
+	//	isSnap = false;
+	//}
 }
 
 void MainWindow::on_lineEdit_ExposureTime_returnPressed()
@@ -582,19 +595,19 @@ void MainWindow::on_pushButton_snap_Clicked()
 
 void MainWindow::on_pushButton_analysis_Clicked()
 {
-	QPixmap *pix = pbx2->getPixmap();
-	MarkPoints markpoints;
-	markpoints.x1 = pix->width()*globalVar.markPointFacxRD;
-	markpoints.y1 = pix->height()*globalVar.markPointFacyRD;
-	markpoints.x2 = pix->width()*globalVar.markPointFacxLD;
-	markpoints.y2 = pix->height()*globalVar.markPointFacyLD;
-	markpoints.x3 = pix->width()*globalVar.markPointFacxLU;
-	markpoints.y3 = pix->height()*globalVar.markPointFacyLU;
-	markpoints.x4 = pix->width()*globalVar.markPointFacxRU;
-	markpoints.y4 = pix->height()*globalVar.markPointFacyRU;
-	if (globalVar.snapData == nullptr)return;
-	int* lightData = getLightSum(pix->width(), pix->height(), globalVar.snapData, markpoints);
-	int target;
-	ImageAlgorithm::GL_compensation(lightData, COLS, ROWS, 100, 2.8, globalVar.arrayW, target);
+	//QPixmap *pix = pbx2->getPixmap();
+	//MarkPoints markpoints;
+	//markpoints.x1 = pix->width()*globalVar.markPointFacxRD;
+	//markpoints.y1 = pix->height()*globalVar.markPointFacyRD;
+	//markpoints.x2 = pix->width()*globalVar.markPointFacxLD;
+	//markpoints.y2 = pix->height()*globalVar.markPointFacyLD;
+	//markpoints.x3 = pix->width()*globalVar.markPointFacxLU;
+	//markpoints.y3 = pix->height()*globalVar.markPointFacyLU;
+	//markpoints.x4 = pix->width()*globalVar.markPointFacxRU;
+	//markpoints.y4 = pix->height()*globalVar.markPointFacyRU;
+	//if (globalVar.snapData == nullptr)return;
+	//int* lightData = getLightSum(pix->width(), pix->height(), globalVar.snapData, markpoints);
+	//int target;
+	//ImageAlgorithm::GL_compensation(lightData, COLS, ROWS, 100, 2.8, globalVar.arrayW, target);
 }
 
