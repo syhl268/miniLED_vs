@@ -40,10 +40,14 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 
 	//mura系数不能从config.txt文件中读出来，只能从修正数据文件中读出
 	//先实现为给初始化
-	arrayR = new float[ROWS*COLS];
-	arrayG = new float[ROWS*COLS];
-	arrayB = new float[ROWS*COLS];
-	arrayW = new float[ROWS*COLS];
+	arrayRK = new float[ScreenWidth*ScreenHeight];
+	arrayGK = new float[ScreenWidth*ScreenHeight];
+	arrayBK = new float[ScreenWidth*ScreenHeight];
+	arrayRB = new float[ScreenWidth*ScreenHeight];
+	arrayGB = new float[ScreenWidth*ScreenHeight];
+	arrayBB = new float[ScreenWidth*ScreenHeight];
+	facrgb = FACRK;
+	fackind = K;
 
 	
 }

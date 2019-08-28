@@ -3,6 +3,13 @@
 #include <QObject>
 #include <QTime>
 
+enum FacKind {
+	K=0,B,
+};
+enum FacRGB {
+	FACRK=0,FACRB,FACGK,FACGB,FACBK,FACBB,
+};
+
 class GlobalVar : public QObject
 {
 	Q_OBJECT
@@ -25,11 +32,30 @@ public:
 	//右上角
 	float markPointFacxRU, markPointFacyRU;
 	//这部分数据是由MyTableModel类管理和维护的--demura的修正数据
-	float *arrayR, *arrayG, *arrayB,*arrayW;
+	FacRGB facrgb;
+	FacKind fackind;
+	float *arrayRK, *arrayGK, *arrayBK;
+	float *arrayRB, *arrayGB, *arrayBB;
 	uchar* snapData;
 	void setValue(QString line);// line: "x=y"形式
 	void resetValue(QString fileName);
 	void writeFile();
+	float* getFacData(FacRGB frgb) {
+		switch (frgb) {
+		case FACRK:
+			return arrayRK;
+		case FACRB:
+			return arrayRB;
+		case FACGK:
+			return arrayGK;
+		case FACGB:
+			return arrayGB;
+		case FACBK:
+			return arrayBK;
+		case FACBB:
+			return arrayBB;
+		}
+	}
 };
 extern GlobalVar globalVar;
 extern QTime mytime;

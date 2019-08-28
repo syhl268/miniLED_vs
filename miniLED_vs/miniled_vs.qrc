@@ -2,11 +2,20 @@
     <qresource prefix="/miniLED_vs">
         <file>myStyleSheet.qss</file>
         <file>CachedImage_1920_1080_POS3.jpg</file>
+        <file>QSS-master/ElegantDark.qss</file>
+        <file>pic/图片1.png</file>
+        <file>pic/图片2.png</file>
     </qresource>
     <qresource prefix="/pic">
         <file>pic/d1.png</file>
         <file>pic/d2.png</file>
         <file>pic/d3.png</file>
         <file>pic/d4.png</file>
+        <file>pic/1.png</file>
+        <file>pic/2.png</file>
+        <file>pic/3.png</file>
+        <file>pic/4.png</file>
+        <file>pic/5.png</file>
+        <file>pic/6.png</file>
     </qresource>
 </RCC>

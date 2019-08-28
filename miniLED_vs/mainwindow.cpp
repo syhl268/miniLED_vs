@@ -74,6 +74,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	QPixmap icon2(":/pic/pic/d2.png");
 	QPixmap icon3(":/pic/pic/d3.png");
 	QPixmap icon4(":/pic/pic/d4.png");
+	QPixmap icon_snapSign[6];
+	for (int i = 0; i < 6; i++) {
+		icon_snapSign[i] = QPixmap(QString().sprintf(":/pic/pic/%d.png", i + 1));
+	}
+
 	const QSize iconSize(60, 60);
 	ui->pushButton_Direction1->setIcon(icon1);
 	ui->pushButton_Direction1->setIconSize(iconSize);
@@ -86,7 +91,19 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	ui->pushButton_Direction4->setIcon(icon4);
 	ui->pushButton_Direction4->setIconSize(iconSize);
-	
+
+	ui->pushButton_R1->setIcon(icon_snapSign[0]);
+	ui->pushButton_R1->setIconSize(iconSize);
+	ui->pushButton_R2->setIcon(icon_snapSign[0]);
+	ui->pushButton_R2->setIconSize(iconSize);
+	ui->pushButton_G1->setIcon(icon_snapSign[2]);
+	ui->pushButton_G1->setIconSize(iconSize);
+	ui->pushButton_G2->setIcon(icon_snapSign[2]);
+	ui->pushButton_G2->setIconSize(iconSize);
+	ui->pushButton_B1->setIcon(icon_snapSign[4]);
+	ui->pushButton_B1->setIconSize(iconSize);
+	ui->pushButton_B2->setIcon(icon_snapSign[4]);
+	ui->pushButton_B2->setIconSize(iconSize);
 	ui->pictureBox_Capture->setIsDrawMarkPoints(true);
     camera=new Camera();
     //connect(camera,SIGNAL(cameraImgReady(QPixmap*)),this->m_pixItem,SLOT(on_CameraReceived(QPixmap*)));
@@ -114,11 +131,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(colorRdoGroup, SIGNAL(buttonToggled(int, bool)), this, SLOT(on_colorRdoGroup_check(int, bool)));
 
 	colorBtnGroup = new QButtonGroup(this);
-	colorBtnGroup->addButton(ui->pushButton_Normal, 0);
+	colorBtnGroup->addButton(ui->pushButton_SwitchKandB, 0);
 	colorBtnGroup->addButton(ui->pushButton_Red, 1);
 	colorBtnGroup->addButton(ui->pushButton_Green, 2);
 	colorBtnGroup->addButton(ui->pushButton_Blue, 3);
-	colorBtnGroup->addButton(ui->pushButton_White, 4);
 	connect(colorBtnGroup, SIGNAL(buttonClicked(int)), this, SLOT(on_colorBtnGroup_checked(int)));
 
 	addSubBtnGroup = new QButtonGroup(this);
@@ -128,6 +144,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	sndColor = new QColor(0, 0, 0);
 	//调试使用过的。
+
+	
+
 #if 0
 	this->arrayR = new float[globalVar.ScreenWidth*globalVar.ScreenHeight];
 	this->arrayG = new float[globalVar.ScreenWidth*globalVar.ScreenHeight];
@@ -135,7 +154,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->arrayW = new float[globalVar.ScreenWidth*globalVar.ScreenHeight];
 	for (int i = 0; i < globalVar.ScreenWidth*globalVar.ScreenHeight; i++) { arrayR[i] = 1.0; arrayG[i] = 1.0;arrayB[i] = 1.0;arrayW[i] = 1.0;	}
 #endif
-	myModel = new MyTableModel(this,QColor(255,0,0),globalVar.ScreenWidth,globalVar.ScreenHeight,globalVar.arrayW);
+	myModel = new MyTableModel(this,QColor(255,0,0),globalVar.ScreenWidth,globalVar.ScreenHeight,globalVar.arrayRK);
 	selectModle = new QItemSelectionModel(myModel);
 	bool isCon=connect(selectModle, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(on_tableView_CurrentChanged(QModelIndex, QModelIndex)));
 	qDebug() << ui->pushButton_Red->isCheckable();
@@ -405,31 +424,45 @@ void MainWindow::on_colorBtnGroup_checked(int id)
 {
 	switch (id) {
 	case 0:
-		this->myModel->setFacData(globalVar.ScreenWidth,globalVar.ScreenHeight,globalVar.arrayR);
-		this->myModel->setBgColor(QColor(255, 0, 0));
-		ui->tableView_everyPoint->setModel(this->myModel);
+		if (ui->pushButton_SwitchKandB->text() == "切换到k") {
+			ui->pushButton_SwitchKandB->setText("切换到b");
+			ui->label_CurFac->setText("系数-k");
+			globalVar.fackind = K;
+			globalVar.facrgb = FacRGB(globalVar.facrgb - 1);
+		}
+		else {
+			ui->pushButton_SwitchKandB->setText("切换到k");
+			ui->label_CurFac->setText("系数-b");
+			globalVar.fackind = B;
+			globalVar.facrgb = FacRGB(globalVar.facrgb + 1);
+
+		}
 		break;
 	case 1:
-		this->myModel->setFacData(globalVar.ScreenWidth, globalVar.ScreenHeight,globalVar.arrayR);
+		if (globalVar.fackind == K)
+			globalVar.facrgb = FACRK;
+		else
+			globalVar.facrgb = FACRB;
 		this->myModel->setBgColor(QColor(255, 0, 0));
-		ui->tableView_everyPoint->setModel(this->myModel);
 		break;
 	case 2:
-		this->myModel->setFacData(globalVar.ScreenWidth, globalVar.ScreenHeight, globalVar.arrayG);
+		if (globalVar.fackind == K)
+			globalVar.facrgb = FACGK;
+		else
+			globalVar.facrgb = FACGB;
 		this->myModel->setBgColor(QColor(0, 255, 0));
-		ui->tableView_everyPoint->setModel(this->myModel);
 		break;
 	case 3:
-		this->myModel->setFacData(globalVar.ScreenWidth, globalVar.ScreenHeight, globalVar.arrayB);
+		if (globalVar.fackind == K)
+			globalVar.facrgb = FACBK;
+		else
+			globalVar.facrgb = FACBB;
+
 		this->myModel->setBgColor(QColor(0, 0, 255));
-		ui->tableView_everyPoint->setModel(this->myModel);
-		break;
-	case 4:
-		this->myModel->setFacData(globalVar.ScreenWidth, globalVar.ScreenHeight, globalVar.arrayW);
-		this->myModel->setBgColor(QColor(255, 255, 255));
-		ui->tableView_everyPoint->setModel(this->myModel);
 		break;
 	}
+	this->myModel->setFacData(globalVar.ScreenWidth, globalVar.ScreenHeight, globalVar.getFacData(globalVar.facrgb));
+
 	ui->tableView_everyPoint->setFocus();
 
 	//QTableWidgetItem *twi = new QTableWidgetItem("0");

@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="miniLED_Server">
+    </qresource>
+</RCC>

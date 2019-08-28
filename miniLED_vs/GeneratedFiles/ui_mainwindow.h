@@ -71,11 +71,6 @@ public:
     QSpacerItem *horizontalSpacer_12;
     QWidget *page_5;
     QSpacerItem *horizontalSpacer_11;
-    QGroupBox *groupBox;
-    QHBoxLayout *horizontalLayout_2;
-    QLineEdit *lineEdit;
-    QPushButton *pushButton_5;
-    QSpacerItem *horizontalSpacer_2;
     QGroupBox *groupBox_2;
     QVBoxLayout *verticalLayout;
     QWidget *widget;
@@ -169,15 +164,24 @@ public:
     QRadioButton *radioButton;
     QRadioButton *radioButton_2;
     QPushButton *pushButton_2;
-    QLabel *label_34;
-    QFrame *direcselector;
+    QGroupBox *direcselector;
     QGridLayout *gridLayout_4;
     QPushButton *pushButton_Direction1;
-    QPushButton *pushButton_Direction2;
     QPushButton *pushButton_Direction3;
     QPushButton *pushButton_Direction4;
+    QPushButton *pushButton_Direction2;
     QPushButton *pushButton_4;
-    QSpacerItem *verticalSpacer;
+    QFrame *frame_5;
+    QVBoxLayout *verticalLayout_11;
+    QLabel *label_34;
+    QGroupBox *groupBox_11;
+    QGridLayout *gridLayout_5;
+    QPushButton *pushButton_G1;
+    QPushButton *pushButton_B1;
+    QPushButton *pushButton_B2;
+    QPushButton *pushButton_R1;
+    QPushButton *pushButton_R2;
+    QPushButton *pushButton_G2;
     QPictureBox *pictureBox_Capture;
     QVBoxLayout *verticalLayout_13;
     QWidget *page_6;
@@ -235,18 +239,16 @@ public:
     QPushButton *pushButton_10;
     QGroupBox *groupBox_10;
     QGridLayout *gridLayout_3;
-    QLabel *label_35;
-    QPushButton *pushButton_13;
     QLineEdit *lineEdit_CurValue;
-    QLabel *label_36;
-    QPushButton *pushButton_Normal;
-    QPushButton *pushButton_Red;
+    QLabel *label_CurFac;
     QPushButton *pushButton_Green;
+    QPushButton *pushButton_Blue;
+    QPushButton *pushButton_Red;
+    QPushButton *pushButton_13;
+    QPushButton *pushButton_SwitchKandB;
     QComboBox *comboBox_SelectDeltaValue;
     QPushButton *pushButton_Plus;
-    QPushButton *pushButton_Blue;
     QPushButton *pushButton_Sub;
-    QPushButton *pushButton_White;
     QSpacerItem *horizontalSpacer_15;
     QFrame *frame_3;
     QHBoxLayout *horizontalLayout_13;
@@ -411,32 +413,6 @@ public:
         horizontalLayout_5->setStretch(1, 9);
 
         verticalLayout_9->addWidget(groupBox_4);
-
-        groupBox = new QGroupBox(frame);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        horizontalLayout_2 = new QHBoxLayout(groupBox);
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        lineEdit = new QLineEdit(groupBox);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
-
-        horizontalLayout_2->addWidget(lineEdit);
-
-        pushButton_5 = new QPushButton(groupBox);
-        pushButton_5->setObjectName(QStringLiteral("pushButton_5"));
-
-        horizontalLayout_2->addWidget(pushButton_5);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_2->addItem(horizontalSpacer_2);
-
-        horizontalLayout_2->setStretch(0, 6);
-        horizontalLayout_2->setStretch(1, 3);
-        horizontalLayout_2->setStretch(2, 6);
-
-        verticalLayout_9->addWidget(groupBox);
 
         groupBox_2 = new QGroupBox(frame);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
@@ -692,10 +668,9 @@ public:
         verticalLayout_9->addWidget(frame_4);
 
         verticalLayout_9->setStretch(0, 2);
-        verticalLayout_9->setStretch(1, 1);
-        verticalLayout_9->setStretch(2, 4);
-        verticalLayout_9->setStretch(3, 1);
-        verticalLayout_9->setStretch(4, 4);
+        verticalLayout_9->setStretch(1, 4);
+        verticalLayout_9->setStretch(2, 1);
+        verticalLayout_9->setStretch(3, 4);
         stackedWidget->addWidget(page);
         page_2 = new QWidget();
         page_2->setObjectName(QStringLiteral("page_2"));
@@ -870,6 +845,7 @@ public:
 
         radioButton_2 = new QRadioButton(widget_5);
         radioButton_2->setObjectName(QStringLiteral("radioButton_2"));
+        radioButton_2->setChecked(true);
 
         verticalLayout_5->addWidget(radioButton_2);
 
@@ -878,12 +854,7 @@ public:
 
         verticalLayout_5->addWidget(pushButton_2);
 
-        label_34 = new QLabel(widget_5);
-        label_34->setObjectName(QStringLiteral("label_34"));
-
-        verticalLayout_5->addWidget(label_34);
-
-        direcselector = new QFrame(widget_5);
+        direcselector = new QGroupBox(widget_5);
         direcselector->setObjectName(QStringLiteral("direcselector"));
         direcselector->setMinimumSize(QSize(200, 200));
         gridLayout_4 = new QGridLayout(direcselector);
@@ -898,22 +869,11 @@ public:
         sizePolicy.setHeightForWidth(pushButton_Direction1->sizePolicy().hasHeightForWidth());
         pushButton_Direction1->setSizePolicy(sizePolicy);
         pushButton_Direction1->setCheckable(true);
-        pushButton_Direction1->setChecked(false);
+        pushButton_Direction1->setChecked(true);
         pushButton_Direction1->setAutoRepeat(true);
         pushButton_Direction1->setAutoExclusive(true);
 
         gridLayout_4->addWidget(pushButton_Direction1, 0, 0, 1, 1);
-
-        pushButton_Direction2 = new QPushButton(direcselector);
-        pushButton_Direction2->setObjectName(QStringLiteral("pushButton_Direction2"));
-        sizePolicy.setHeightForWidth(pushButton_Direction2->sizePolicy().hasHeightForWidth());
-        pushButton_Direction2->setSizePolicy(sizePolicy);
-        pushButton_Direction2->setCheckable(true);
-        pushButton_Direction2->setChecked(true);
-        pushButton_Direction2->setAutoRepeat(true);
-        pushButton_Direction2->setAutoExclusive(true);
-
-        gridLayout_4->addWidget(pushButton_Direction2, 0, 1, 1, 1);
 
         pushButton_Direction3 = new QPushButton(direcselector);
         pushButton_Direction3->setObjectName(QStringLiteral("pushButton_Direction3"));
@@ -937,6 +897,17 @@ public:
 
         gridLayout_4->addWidget(pushButton_Direction4, 1, 1, 1, 1);
 
+        pushButton_Direction2 = new QPushButton(direcselector);
+        pushButton_Direction2->setObjectName(QStringLiteral("pushButton_Direction2"));
+        sizePolicy.setHeightForWidth(pushButton_Direction2->sizePolicy().hasHeightForWidth());
+        pushButton_Direction2->setSizePolicy(sizePolicy);
+        pushButton_Direction2->setCheckable(true);
+        pushButton_Direction2->setChecked(false);
+        pushButton_Direction2->setAutoRepeat(true);
+        pushButton_Direction2->setAutoExclusive(true);
+
+        gridLayout_4->addWidget(pushButton_Direction2, 0, 1, 1, 1);
+
 
         verticalLayout_5->addWidget(direcselector);
 
@@ -945,10 +916,106 @@ public:
 
         verticalLayout_5->addWidget(pushButton_4);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        frame_5 = new QFrame(widget_5);
+        frame_5->setObjectName(QStringLiteral("frame_5"));
+        frame_5->setFrameShape(QFrame::StyledPanel);
+        frame_5->setFrameShadow(QFrame::Raised);
+        verticalLayout_11 = new QVBoxLayout(frame_5);
+        verticalLayout_11->setSpacing(6);
+        verticalLayout_11->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_11->setObjectName(QStringLiteral("verticalLayout_11"));
+        label_34 = new QLabel(frame_5);
+        label_34->setObjectName(QStringLiteral("label_34"));
+        label_34->setAlignment(Qt::AlignCenter);
 
-        verticalLayout_5->addItem(verticalSpacer);
+        verticalLayout_11->addWidget(label_34);
 
+        groupBox_11 = new QGroupBox(frame_5);
+        groupBox_11->setObjectName(QStringLiteral("groupBox_11"));
+        gridLayout_5 = new QGridLayout(groupBox_11);
+        gridLayout_5->setSpacing(6);
+        gridLayout_5->setContentsMargins(11, 11, 11, 11);
+        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
+        pushButton_G1 = new QPushButton(groupBox_11);
+        pushButton_G1->setObjectName(QStringLiteral("pushButton_G1"));
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Maximum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(pushButton_G1->sizePolicy().hasHeightForWidth());
+        pushButton_G1->setSizePolicy(sizePolicy1);
+        pushButton_G1->setCheckable(true);
+        pushButton_G1->setChecked(false);
+        pushButton_G1->setAutoRepeat(true);
+        pushButton_G1->setAutoExclusive(true);
+
+        gridLayout_5->addWidget(pushButton_G1, 1, 0, 1, 1);
+
+        pushButton_B1 = new QPushButton(groupBox_11);
+        pushButton_B1->setObjectName(QStringLiteral("pushButton_B1"));
+        sizePolicy1.setHeightForWidth(pushButton_B1->sizePolicy().hasHeightForWidth());
+        pushButton_B1->setSizePolicy(sizePolicy1);
+        pushButton_B1->setCheckable(true);
+        pushButton_B1->setChecked(false);
+        pushButton_B1->setAutoRepeat(true);
+        pushButton_B1->setAutoExclusive(true);
+
+        gridLayout_5->addWidget(pushButton_B1, 3, 0, 1, 1);
+
+        pushButton_B2 = new QPushButton(groupBox_11);
+        pushButton_B2->setObjectName(QStringLiteral("pushButton_B2"));
+        sizePolicy1.setHeightForWidth(pushButton_B2->sizePolicy().hasHeightForWidth());
+        pushButton_B2->setSizePolicy(sizePolicy1);
+        pushButton_B2->setCheckable(true);
+        pushButton_B2->setChecked(false);
+        pushButton_B2->setAutoRepeat(true);
+        pushButton_B2->setAutoExclusive(true);
+
+        gridLayout_5->addWidget(pushButton_B2, 3, 1, 1, 1);
+
+        pushButton_R1 = new QPushButton(groupBox_11);
+        pushButton_R1->setObjectName(QStringLiteral("pushButton_R1"));
+        sizePolicy1.setHeightForWidth(pushButton_R1->sizePolicy().hasHeightForWidth());
+        pushButton_R1->setSizePolicy(sizePolicy1);
+        pushButton_R1->setCheckable(true);
+        pushButton_R1->setChecked(false);
+        pushButton_R1->setAutoRepeat(true);
+        pushButton_R1->setAutoExclusive(true);
+
+        gridLayout_5->addWidget(pushButton_R1, 0, 0, 1, 1);
+
+        pushButton_R2 = new QPushButton(groupBox_11);
+        pushButton_R2->setObjectName(QStringLiteral("pushButton_R2"));
+        sizePolicy1.setHeightForWidth(pushButton_R2->sizePolicy().hasHeightForWidth());
+        pushButton_R2->setSizePolicy(sizePolicy1);
+        pushButton_R2->setCheckable(true);
+        pushButton_R2->setChecked(false);
+        pushButton_R2->setAutoRepeat(true);
+        pushButton_R2->setAutoExclusive(true);
+
+        gridLayout_5->addWidget(pushButton_R2, 0, 1, 1, 1);
+
+        pushButton_G2 = new QPushButton(groupBox_11);
+        pushButton_G2->setObjectName(QStringLiteral("pushButton_G2"));
+        sizePolicy1.setHeightForWidth(pushButton_G2->sizePolicy().hasHeightForWidth());
+        pushButton_G2->setSizePolicy(sizePolicy1);
+        pushButton_G2->setCheckable(true);
+        pushButton_G2->setChecked(false);
+        pushButton_G2->setAutoRepeat(true);
+        pushButton_G2->setAutoExclusive(true);
+
+        gridLayout_5->addWidget(pushButton_G2, 1, 1, 1, 1);
+
+
+        verticalLayout_11->addWidget(groupBox_11);
+
+        verticalLayout_11->setStretch(0, 1);
+        verticalLayout_11->setStretch(1, 8);
+
+        verticalLayout_5->addWidget(frame_5);
+
+        verticalLayout_5->setStretch(0, 1);
+        verticalLayout_5->setStretch(1, 1);
+        verticalLayout_5->setStretch(2, 1);
 
         horizontalLayout_11->addWidget(widget_5);
 
@@ -1239,21 +1306,6 @@ public:
         gridLayout_3->setSpacing(6);
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        label_35 = new QLabel(groupBox_10);
-        label_35->setObjectName(QStringLiteral("label_35"));
-        label_35->setMinimumSize(QSize(0, 25));
-        label_35->setMaximumSize(QSize(16777215, 30));
-        label_35->setAlignment(Qt::AlignCenter);
-
-        gridLayout_3->addWidget(label_35, 0, 0, 1, 1);
-
-        pushButton_13 = new QPushButton(groupBox_10);
-        pushButton_13->setObjectName(QStringLiteral("pushButton_13"));
-        pushButton_13->setMinimumSize(QSize(0, 25));
-        pushButton_13->setMaximumSize(QSize(16777215, 30));
-
-        gridLayout_3->addWidget(pushButton_13, 2, 0, 1, 1);
-
         lineEdit_CurValue = new QLineEdit(groupBox_10);
         lineEdit_CurValue->setObjectName(QStringLiteral("lineEdit_CurValue"));
         lineEdit_CurValue->setMinimumSize(QSize(0, 25));
@@ -1261,32 +1313,13 @@ public:
 
         gridLayout_3->addWidget(lineEdit_CurValue, 0, 1, 1, 1);
 
-        label_36 = new QLabel(groupBox_10);
-        label_36->setObjectName(QStringLiteral("label_36"));
-        label_36->setMinimumSize(QSize(0, 25));
-        label_36->setMaximumSize(QSize(16777215, 30));
-        label_36->setAlignment(Qt::AlignCenter);
+        label_CurFac = new QLabel(groupBox_10);
+        label_CurFac->setObjectName(QStringLiteral("label_CurFac"));
+        label_CurFac->setMinimumSize(QSize(0, 25));
+        label_CurFac->setMaximumSize(QSize(16777215, 30));
+        label_CurFac->setAlignment(Qt::AlignCenter);
 
-        gridLayout_3->addWidget(label_36, 0, 2, 1, 1);
-
-        pushButton_Normal = new QPushButton(groupBox_10);
-        pushButton_Normal->setObjectName(QStringLiteral("pushButton_Normal"));
-        pushButton_Normal->setMinimumSize(QSize(0, 25));
-        pushButton_Normal->setMaximumSize(QSize(16777215, 30));
-        pushButton_Normal->setCheckable(true);
-        pushButton_Normal->setAutoExclusive(true);
-
-        gridLayout_3->addWidget(pushButton_Normal, 2, 1, 1, 1);
-
-        pushButton_Red = new QPushButton(groupBox_10);
-        pushButton_Red->setObjectName(QStringLiteral("pushButton_Red"));
-        pushButton_Red->setMinimumSize(QSize(0, 25));
-        pushButton_Red->setMaximumSize(QSize(16777215, 30));
-        pushButton_Red->setCheckable(true);
-        pushButton_Red->setAutoRepeat(true);
-        pushButton_Red->setAutoExclusive(true);
-
-        gridLayout_3->addWidget(pushButton_Red, 2, 2, 1, 1);
+        gridLayout_3->addWidget(label_CurFac, 0, 0, 1, 1);
 
         pushButton_Green = new QPushButton(groupBox_10);
         pushButton_Green->setObjectName(QStringLiteral("pushButton_Green"));
@@ -1298,20 +1331,6 @@ public:
 
         gridLayout_3->addWidget(pushButton_Green, 2, 3, 1, 1);
 
-        comboBox_SelectDeltaValue = new QComboBox(groupBox_10);
-        comboBox_SelectDeltaValue->setObjectName(QStringLiteral("comboBox_SelectDeltaValue"));
-        comboBox_SelectDeltaValue->setMinimumSize(QSize(0, 25));
-        comboBox_SelectDeltaValue->setMaximumSize(QSize(16777215, 30));
-
-        gridLayout_3->addWidget(comboBox_SelectDeltaValue, 0, 3, 1, 1);
-
-        pushButton_Plus = new QPushButton(groupBox_10);
-        pushButton_Plus->setObjectName(QStringLiteral("pushButton_Plus"));
-        pushButton_Plus->setMinimumSize(QSize(0, 25));
-        pushButton_Plus->setMaximumSize(QSize(16777215, 30));
-
-        gridLayout_3->addWidget(pushButton_Plus, 0, 4, 1, 1);
-
         pushButton_Blue = new QPushButton(groupBox_10);
         pushButton_Blue->setObjectName(QStringLiteral("pushButton_Blue"));
         pushButton_Blue->setMinimumSize(QSize(0, 25));
@@ -1322,22 +1341,52 @@ public:
 
         gridLayout_3->addWidget(pushButton_Blue, 2, 4, 1, 1);
 
+        pushButton_Red = new QPushButton(groupBox_10);
+        pushButton_Red->setObjectName(QStringLiteral("pushButton_Red"));
+        pushButton_Red->setMinimumSize(QSize(0, 25));
+        pushButton_Red->setMaximumSize(QSize(16777215, 30));
+        pushButton_Red->setCheckable(true);
+        pushButton_Red->setAutoRepeat(true);
+        pushButton_Red->setAutoExclusive(true);
+
+        gridLayout_3->addWidget(pushButton_Red, 2, 2, 1, 1);
+
+        pushButton_13 = new QPushButton(groupBox_10);
+        pushButton_13->setObjectName(QStringLiteral("pushButton_13"));
+        pushButton_13->setMinimumSize(QSize(0, 25));
+        pushButton_13->setMaximumSize(QSize(16777215, 30));
+
+        gridLayout_3->addWidget(pushButton_13, 2, 1, 1, 1);
+
+        pushButton_SwitchKandB = new QPushButton(groupBox_10);
+        pushButton_SwitchKandB->setObjectName(QStringLiteral("pushButton_SwitchKandB"));
+        pushButton_SwitchKandB->setMinimumSize(QSize(0, 25));
+        pushButton_SwitchKandB->setMaximumSize(QSize(16777215, 30));
+        pushButton_SwitchKandB->setCheckable(false);
+        pushButton_SwitchKandB->setAutoExclusive(false);
+
+        gridLayout_3->addWidget(pushButton_SwitchKandB, 2, 0, 1, 1);
+
+        comboBox_SelectDeltaValue = new QComboBox(groupBox_10);
+        comboBox_SelectDeltaValue->setObjectName(QStringLiteral("comboBox_SelectDeltaValue"));
+        comboBox_SelectDeltaValue->setMinimumSize(QSize(0, 25));
+        comboBox_SelectDeltaValue->setMaximumSize(QSize(16777215, 30));
+
+        gridLayout_3->addWidget(comboBox_SelectDeltaValue, 0, 2, 1, 1);
+
+        pushButton_Plus = new QPushButton(groupBox_10);
+        pushButton_Plus->setObjectName(QStringLiteral("pushButton_Plus"));
+        pushButton_Plus->setMinimumSize(QSize(0, 25));
+        pushButton_Plus->setMaximumSize(QSize(16777215, 30));
+
+        gridLayout_3->addWidget(pushButton_Plus, 0, 3, 1, 1);
+
         pushButton_Sub = new QPushButton(groupBox_10);
         pushButton_Sub->setObjectName(QStringLiteral("pushButton_Sub"));
         pushButton_Sub->setMinimumSize(QSize(0, 25));
         pushButton_Sub->setMaximumSize(QSize(16777215, 30));
 
-        gridLayout_3->addWidget(pushButton_Sub, 0, 5, 1, 1);
-
-        pushButton_White = new QPushButton(groupBox_10);
-        pushButton_White->setObjectName(QStringLiteral("pushButton_White"));
-        pushButton_White->setMinimumSize(QSize(0, 25));
-        pushButton_White->setMaximumSize(QSize(16777215, 30));
-        pushButton_White->setCheckable(true);
-        pushButton_White->setAutoRepeat(true);
-        pushButton_White->setAutoExclusive(true);
-
-        gridLayout_3->addWidget(pushButton_White, 2, 5, 1, 1);
+        gridLayout_3->addWidget(pushButton_Sub, 0, 4, 1, 1);
 
         gridLayout_3->setColumnStretch(0, 1);
         gridLayout_3->setColumnStretch(1, 1);
@@ -1415,7 +1464,7 @@ public:
         retranslateUi(MainWindow);
         QObject::connect(lineEdit_CurValue, SIGNAL(returnPressed()), MainWindow, SLOT(on_LineEdit_CurValue_Edited()));
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(4);
         comboBox_SelectConnectWay->setCurrentIndex(0);
         tabWidget->setCurrentIndex(0);
 
@@ -1445,8 +1494,6 @@ public:
         label_15->setText(QApplication::translate("MainWindow", "\346\234\254\346\234\272IP", Q_NULLPTR));
         label_16->setText(QApplication::translate("MainWindow", "\347\253\257\345\217\243", Q_NULLPTR));
         pushButton->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256\347\233\221\345\220\254", Q_NULLPTR));
-        groupBox->setTitle(QApplication::translate("MainWindow", "\345\267\245\344\275\234\347\233\256\345\275\225", Q_NULLPTR));
-        pushButton_5->setText(QApplication::translate("MainWindow", "\346\265\217\350\247\210\342\200\246\342\200\246", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("MainWindow", "\345\261\217\345\271\225\347\256\261\344\275\223\345\217\202\346\225\260", Q_NULLPTR));
         label->setText(QApplication::translate("MainWindow", "\345\261\217\345\271\225\345\256\275\345\272\246", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "\347\256\261\344\275\223\345\256\275\345\272\246", Q_NULLPTR));
@@ -1492,14 +1539,22 @@ public:
         lineEdit_Aperture_6->setText(QApplication::translate("MainWindow", "4.5", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "\350\223\235", Q_NULLPTR));
         radioButton->setText(QApplication::translate("MainWindow", "\345\256\236\346\227\266\346\230\276\347\244\272", Q_NULLPTR));
-        radioButton_2->setText(QApplication::translate("MainWindow", "\345\215\225\345\214\272\346\230\276\347\244\272", Q_NULLPTR));
+        radioButton_2->setText(QApplication::translate("MainWindow", "\346\212\223\346\213\215\346\230\276\347\244\272", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("MainWindow", "\346\212\223\346\213\215", Q_NULLPTR));
-        label_34->setText(QApplication::translate("MainWindow", "\351\200\211\346\213\251\351\241\272\345\272\217\357\274\232", Q_NULLPTR));
+        direcselector->setTitle(QApplication::translate("MainWindow", "\351\200\211\346\213\251\345\210\206\345\214\272\346\212\223\346\213\215\351\241\272\345\272\217", Q_NULLPTR));
         pushButton_Direction1->setText(QString());
-        pushButton_Direction2->setText(QString());
         pushButton_Direction3->setText(QString());
         pushButton_Direction4->setText(QString());
+        pushButton_Direction2->setText(QString());
         pushButton_4->setText(QApplication::translate("MainWindow", "\345\274\200\345\247\213\345\210\206\346\236\220", Q_NULLPTR));
+        label_34->setText(QApplication::translate("MainWindow", "\345\210\206\345\214\272\347\274\226\345\217\267\346\230\276\347\244\272\357\274\232     1-1", Q_NULLPTR));
+        groupBox_11->setTitle(QApplication::translate("MainWindow", "\346\212\223\346\213\215\346\214\207\347\244\272", Q_NULLPTR));
+        pushButton_G1->setText(QString());
+        pushButton_B1->setText(QString());
+        pushButton_B2->setText(QString());
+        pushButton_R1->setText(QString());
+        pushButton_R2->setText(QString());
+        pushButton_G2->setText(QString());
         label_29->setText(QApplication::translate("MainWindow", "\346\240\241\346\255\243\345\220\216\344\272\256\345\272\246(%)", Q_NULLPTR));
         label_30->setText(QApplication::translate("MainWindow", "R", Q_NULLPTR));
         label_31->setText(QApplication::translate("MainWindow", "G", Q_NULLPTR));
@@ -1531,12 +1586,12 @@ public:
         pushButton_3->setText(QApplication::translate("MainWindow", "\345\217\221\351\200\201", Q_NULLPTR));
         pushButton_10->setText(QApplication::translate("MainWindow", "\345\233\236\350\257\273", Q_NULLPTR));
         groupBox_10->setTitle(QApplication::translate("MainWindow", "\351\200\211\344\270\255\351\203\250\345\210\206", Q_NULLPTR));
-        label_35->setText(QApplication::translate("MainWindow", "\347\263\273\346\225\260", Q_NULLPTR));
-        pushButton_13->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256", Q_NULLPTR));
-        label_36->setText(QApplication::translate("MainWindow", "\345\276\256\350\260\203\357\274\232", Q_NULLPTR));
-        pushButton_Normal->setText(QApplication::translate("MainWindow", "\346\255\243\345\270\270", Q_NULLPTR));
-        pushButton_Red->setText(QApplication::translate("MainWindow", "\347\272\242", Q_NULLPTR));
+        label_CurFac->setText(QApplication::translate("MainWindow", "\347\263\273\346\225\260-k", Q_NULLPTR));
         pushButton_Green->setText(QApplication::translate("MainWindow", "\347\273\277", Q_NULLPTR));
+        pushButton_Blue->setText(QApplication::translate("MainWindow", "\350\223\235", Q_NULLPTR));
+        pushButton_Red->setText(QApplication::translate("MainWindow", "\347\272\242", Q_NULLPTR));
+        pushButton_13->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256", Q_NULLPTR));
+        pushButton_SwitchKandB->setText(QApplication::translate("MainWindow", "\345\210\207\346\215\242\345\210\260b", Q_NULLPTR));
         comboBox_SelectDeltaValue->clear();
         comboBox_SelectDeltaValue->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "0.02", Q_NULLPTR)
@@ -1549,9 +1604,7 @@ public:
          << QApplication::translate("MainWindow", "1/255", Q_NULLPTR)
         );
         pushButton_Plus->setText(QApplication::translate("MainWindow", "+", Q_NULLPTR));
-        pushButton_Blue->setText(QApplication::translate("MainWindow", "\350\223\235", Q_NULLPTR));
         pushButton_Sub->setText(QApplication::translate("MainWindow", "-", Q_NULLPTR));
-        pushButton_White->setText(QApplication::translate("MainWindow", "\347\231\275", Q_NULLPTR));
         menu->setTitle(QApplication::translate("MainWindow", "\346\226\207\344\273\266", Q_NULLPTR));
         menu_2->setTitle(QApplication::translate("MainWindow", "\347\274\226\350\276\221", Q_NULLPTR));
         menu_3->setTitle(QApplication::translate("MainWindow", "\350\256\276\347\275\256", Q_NULLPTR));
