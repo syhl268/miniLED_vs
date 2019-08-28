@@ -20,6 +20,8 @@ PixItem *m_pixItem1;
 Camera* camera;
 bool isSnap = false;
 
+QPictureBox *picBox_Show, *picBox_Capture;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -66,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_graphicsView1->setMinimumSize(ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
     ui->verticalLayout_12->addWidget(m_graphicsView1);
 	*/
+	picBox_Show = ui->pictureBox_CameraShow;
+	picBox_Capture = ui->pictureBox_Capture;
 	QPixmap *pixmap1 = new QPixmap(":/miniLED_vs/pic/图片1.png");
 	QPixmap *pixmap2 = new QPixmap(":/miniLED_vs/pic/图片2.png");
 	ui->pictureBox_Capture->setPixmap(pixmap2);

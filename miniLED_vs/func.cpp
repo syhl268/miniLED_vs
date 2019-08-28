@@ -394,6 +394,10 @@ void initResolution(int width, int height){
 	resolution.width = width;
 	resolution.height = height;
 }
+AOIAPI Size getResolution()
+{
+	return resolution;
+}
 int clamp(double num){
 	if (num < 0)return 0;
 	else if (num > 255)return 255;

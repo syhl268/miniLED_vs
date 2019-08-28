@@ -49,8 +49,9 @@ void IntArray::fill(int globalValue)
 	}
 }
 
-bool ImageAlgorithm::GL_compensation(IN int* imgSrc,IN int width,IN int height, IN uchar GL, IN float gamma, OUT float* imgOut, OUT int & target)
+bool ImageAlgorithm::GL_compensation(IN int* imgSrc,IN int width,IN int height, IN uchar GL, IN float gamma, OUT float* imgOut)
 {
+	int target = 0;
 	if (imgSrc == nullptr)return false;
 	imgOut = new float[width*height];
 	//深度拷贝一份数据
@@ -114,6 +115,14 @@ bool ImageAlgorithm::Curvefit22(IN int * imgSrc1, IN int W, IN int H, IN uchar G
 		}
 	}
 	return true;
+}
+void ImageAlgorithm::CalcFacsFromSixPic(QString fnames[6], MarkPoints markpoints,float* fac[6])
+{
+	for (int i = 0; i < 6; i++) {
+		int* lightSums= getLightSum(imread(fnames[i].toStdString()), markpoints);
+		GL_compensation(lightSums, getResolution().width, getResolution().height, 100, 2.8, fac[i]);
+	}
+
 }
 ImageAlgorithm::~ImageAlgorithm()
 {
