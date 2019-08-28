@@ -151,7 +151,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page">
        <widget class="QFrame" name="frame">
@@ -1810,7 +1810,7 @@
              <property name="title">
               <string>选中部分</string>
              </property>
-             <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1,1,1,1,1" columnminimumwidth="1,1,1,1,1,1">
+             <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1,1,1,1" columnminimumwidth="1,1,1,1,1">
               <item row="0" column="1">
                <widget class="QLineEdit" name="lineEdit_CurValue">
                 <property name="minimumSize">

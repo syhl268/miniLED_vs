@@ -1393,13 +1393,11 @@ public:
         gridLayout_3->setColumnStretch(2, 1);
         gridLayout_3->setColumnStretch(3, 1);
         gridLayout_3->setColumnStretch(4, 1);
-        gridLayout_3->setColumnStretch(5, 1);
         gridLayout_3->setColumnMinimumWidth(0, 1);
         gridLayout_3->setColumnMinimumWidth(1, 1);
         gridLayout_3->setColumnMinimumWidth(2, 1);
         gridLayout_3->setColumnMinimumWidth(3, 1);
         gridLayout_3->setColumnMinimumWidth(4, 1);
-        gridLayout_3->setColumnMinimumWidth(5, 1);
 
         horizontalLayout_12->addWidget(groupBox_10);
 
@@ -1464,7 +1462,7 @@ public:
         retranslateUi(MainWindow);
         QObject::connect(lineEdit_CurValue, SIGNAL(returnPressed()), MainWindow, SLOT(on_LineEdit_CurValue_Edited()));
 
-        stackedWidget->setCurrentIndex(4);
+        stackedWidget->setCurrentIndex(2);
         comboBox_SelectConnectWay->setCurrentIndex(0);
         tabWidget->setCurrentIndex(0);
 
