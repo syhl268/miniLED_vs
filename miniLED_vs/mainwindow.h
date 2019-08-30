@@ -27,6 +27,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+	void setAllConfigValue();
+	void getAllConfigValueToGlobal();
+	//界面左下角显示当前拍摄的图片(R1-B2)
+	void setPhotoStatus();
+protected:
+	virtual void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void on_checkBox_OutlineGap_clicked(bool checked);
@@ -58,6 +64,8 @@ private slots:
 
 	void on_pushButton_Confirm_clicked();
 
+	void on_pushButton_Cancel_clicked();
+
 	void on_colorRdoGroup_check(int, bool);
 
 	void on_lineEdit_brightness_textChanged(QString);
@@ -77,6 +85,7 @@ private slots:
 	void on_pushButton_snap_Clicked();
 
 	void on_pushButton_analysis_Clicked();
+
 
 private:
     Ui::MainWindow *ui;
@@ -99,6 +108,7 @@ private:
 	QItemSelectionModel *selectModle;
 
 	QButtonGroup *addSubBtnGroup;
+	QPixmap icon_snapSign[6];
 };
 
 #endif // MAINWINDOW_H

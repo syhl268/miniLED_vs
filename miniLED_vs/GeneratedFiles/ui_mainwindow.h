@@ -63,10 +63,10 @@ public:
     QWidget *page_4;
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_15;
-    QLineEdit *lineEdit_2;
+    QLineEdit *lineEdit_Ip;
     QSpacerItem *horizontalSpacer_13;
     QLabel *label_16;
-    QLineEdit *lineEdit_3;
+    QLineEdit *lineEdit_Port;
     QPushButton *pushButton;
     QSpacerItem *horizontalSpacer_12;
     QWidget *page_5;
@@ -79,19 +79,19 @@ public:
     QLineEdit *lineEdit_ScreenWidth;
     QSpacerItem *horizontalSpacer_5;
     QLabel *label_3;
-    QLineEdit *lineEdit_ScreenWidth_2;
+    QLineEdit *lineEdit_BoxWidth;
     QSpacerItem *horizontalSpacer_7;
     QLabel *label_5;
-    QLineEdit *lineEdit_ScreenWidth_4;
+    QLineEdit *lineEdit_ModuleWidth;
     QSpacerItem *horizontalSpacer_3;
     QLabel *label_2;
     QLineEdit *lineEdit_ScreenHeight;
     QSpacerItem *horizontalSpacer_6;
     QLabel *label_4;
-    QLineEdit *lineEdit_ScreenWidth_3;
+    QLineEdit *lineEdit_BoxHeight;
     QSpacerItem *horizontalSpacer_8;
     QLabel *label_6;
-    QLineEdit *lineEdit_ScreenWidth_5;
+    QLineEdit *lineEdit_ModuleHeight;
     QSpacerItem *horizontalSpacer_4;
     QWidget *widget_2;
     QHBoxLayout *horizontalLayout_3;
@@ -108,18 +108,18 @@ public:
     QGridLayout *gridLayout_2;
     QLabel *label_13;
     QSpacerItem *horizontalSpacer_9;
-    QLineEdit *lineEdit_ScreenWidth_12;
+    QLineEdit *lineEdit_PartHeight;
     QLabel *label_12;
     QLabel *label_7;
-    QLineEdit *lineEdit_ScreenWidth_10;
+    QLineEdit *lineEdit_PartWidth;
     QSpacerItem *horizontalSpacer_10;
-    QLineEdit *lineEdit_ScreenWidth_13;
-    QLineEdit *lineEdit_ScreenWidth_11;
+    QLineEdit *lineEdit_PartVertiNum;
+    QLineEdit *lineEdit_PartHoriNum;
     QLabel *label_14;
     QFrame *frame_4;
     QHBoxLayout *horizontalLayout_16;
     QSpacerItem *horizontalSpacer_16;
-    QPushButton *pushButton_Sure;
+    QPushButton *pushButton_Confirm;
     QPushButton *pushButton_Cancel;
     QWidget *page_2;
     QVBoxLayout *verticalLayout_4;
@@ -170,7 +170,7 @@ public:
     QPushButton *pushButton_Direction3;
     QPushButton *pushButton_Direction4;
     QPushButton *pushButton_Direction2;
-    QPushButton *pushButton_4;
+    QPushButton *pushButton_Analysis;
     QFrame *frame_5;
     QVBoxLayout *verticalLayout_11;
     QLabel *label_34;
@@ -369,10 +369,10 @@ public:
 
         horizontalLayout_6->addWidget(label_15);
 
-        lineEdit_2 = new QLineEdit(page_4);
-        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        lineEdit_Ip = new QLineEdit(page_4);
+        lineEdit_Ip->setObjectName(QStringLiteral("lineEdit_Ip"));
 
-        horizontalLayout_6->addWidget(lineEdit_2);
+        horizontalLayout_6->addWidget(lineEdit_Ip);
 
         horizontalSpacer_13 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -384,10 +384,10 @@ public:
 
         horizontalLayout_6->addWidget(label_16);
 
-        lineEdit_3 = new QLineEdit(page_4);
-        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
+        lineEdit_Port = new QLineEdit(page_4);
+        lineEdit_Port->setObjectName(QStringLiteral("lineEdit_Port"));
 
-        horizontalLayout_6->addWidget(lineEdit_3);
+        horizontalLayout_6->addWidget(lineEdit_Port);
 
         pushButton = new QPushButton(page_4);
         pushButton->setObjectName(QStringLiteral("pushButton"));
@@ -445,10 +445,10 @@ public:
 
         gridLayout->addWidget(label_3, 0, 3, 1, 1);
 
-        lineEdit_ScreenWidth_2 = new QLineEdit(widget);
-        lineEdit_ScreenWidth_2->setObjectName(QStringLiteral("lineEdit_ScreenWidth_2"));
+        lineEdit_BoxWidth = new QLineEdit(widget);
+        lineEdit_BoxWidth->setObjectName(QStringLiteral("lineEdit_BoxWidth"));
 
-        gridLayout->addWidget(lineEdit_ScreenWidth_2, 0, 4, 1, 1);
+        gridLayout->addWidget(lineEdit_BoxWidth, 0, 4, 1, 1);
 
         horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -459,10 +459,10 @@ public:
 
         gridLayout->addWidget(label_5, 0, 6, 1, 1);
 
-        lineEdit_ScreenWidth_4 = new QLineEdit(widget);
-        lineEdit_ScreenWidth_4->setObjectName(QStringLiteral("lineEdit_ScreenWidth_4"));
+        lineEdit_ModuleWidth = new QLineEdit(widget);
+        lineEdit_ModuleWidth->setObjectName(QStringLiteral("lineEdit_ModuleWidth"));
 
-        gridLayout->addWidget(lineEdit_ScreenWidth_4, 0, 7, 1, 1);
+        gridLayout->addWidget(lineEdit_ModuleWidth, 0, 7, 1, 1);
 
         horizontalSpacer_3 = new QSpacerItem(71, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -487,10 +487,10 @@ public:
 
         gridLayout->addWidget(label_4, 1, 3, 1, 1);
 
-        lineEdit_ScreenWidth_3 = new QLineEdit(widget);
-        lineEdit_ScreenWidth_3->setObjectName(QStringLiteral("lineEdit_ScreenWidth_3"));
+        lineEdit_BoxHeight = new QLineEdit(widget);
+        lineEdit_BoxHeight->setObjectName(QStringLiteral("lineEdit_BoxHeight"));
 
-        gridLayout->addWidget(lineEdit_ScreenWidth_3, 1, 4, 1, 1);
+        gridLayout->addWidget(lineEdit_BoxHeight, 1, 4, 1, 1);
 
         horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -501,10 +501,10 @@ public:
 
         gridLayout->addWidget(label_6, 1, 6, 1, 1);
 
-        lineEdit_ScreenWidth_5 = new QLineEdit(widget);
-        lineEdit_ScreenWidth_5->setObjectName(QStringLiteral("lineEdit_ScreenWidth_5"));
+        lineEdit_ModuleHeight = new QLineEdit(widget);
+        lineEdit_ModuleHeight->setObjectName(QStringLiteral("lineEdit_ModuleHeight"));
 
-        gridLayout->addWidget(lineEdit_ScreenWidth_5, 1, 7, 1, 1);
+        gridLayout->addWidget(lineEdit_ModuleHeight, 1, 7, 1, 1);
 
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -594,10 +594,10 @@ public:
 
         gridLayout_2->addItem(horizontalSpacer_9, 0, 4, 1, 1);
 
-        lineEdit_ScreenWidth_12 = new QLineEdit(groupBox_3);
-        lineEdit_ScreenWidth_12->setObjectName(QStringLiteral("lineEdit_ScreenWidth_12"));
+        lineEdit_PartHeight = new QLineEdit(groupBox_3);
+        lineEdit_PartHeight->setObjectName(QStringLiteral("lineEdit_PartHeight"));
 
-        gridLayout_2->addWidget(lineEdit_ScreenWidth_12, 1, 1, 1, 1);
+        gridLayout_2->addWidget(lineEdit_PartHeight, 1, 1, 1, 1);
 
         label_12 = new QLabel(groupBox_3);
         label_12->setObjectName(QStringLiteral("label_12"));
@@ -611,24 +611,24 @@ public:
 
         gridLayout_2->addWidget(label_7, 0, 0, 1, 1);
 
-        lineEdit_ScreenWidth_10 = new QLineEdit(groupBox_3);
-        lineEdit_ScreenWidth_10->setObjectName(QStringLiteral("lineEdit_ScreenWidth_10"));
+        lineEdit_PartWidth = new QLineEdit(groupBox_3);
+        lineEdit_PartWidth->setObjectName(QStringLiteral("lineEdit_PartWidth"));
 
-        gridLayout_2->addWidget(lineEdit_ScreenWidth_10, 0, 1, 1, 1);
+        gridLayout_2->addWidget(lineEdit_PartWidth, 0, 1, 1, 1);
 
         horizontalSpacer_10 = new QSpacerItem(234, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout_2->addItem(horizontalSpacer_10, 1, 4, 1, 1);
 
-        lineEdit_ScreenWidth_13 = new QLineEdit(groupBox_3);
-        lineEdit_ScreenWidth_13->setObjectName(QStringLiteral("lineEdit_ScreenWidth_13"));
+        lineEdit_PartVertiNum = new QLineEdit(groupBox_3);
+        lineEdit_PartVertiNum->setObjectName(QStringLiteral("lineEdit_PartVertiNum"));
 
-        gridLayout_2->addWidget(lineEdit_ScreenWidth_13, 1, 3, 1, 1);
+        gridLayout_2->addWidget(lineEdit_PartVertiNum, 1, 3, 1, 1);
 
-        lineEdit_ScreenWidth_11 = new QLineEdit(groupBox_3);
-        lineEdit_ScreenWidth_11->setObjectName(QStringLiteral("lineEdit_ScreenWidth_11"));
+        lineEdit_PartHoriNum = new QLineEdit(groupBox_3);
+        lineEdit_PartHoriNum->setObjectName(QStringLiteral("lineEdit_PartHoriNum"));
 
-        gridLayout_2->addWidget(lineEdit_ScreenWidth_11, 0, 3, 1, 1);
+        gridLayout_2->addWidget(lineEdit_PartHoriNum, 0, 3, 1, 1);
 
         label_14 = new QLabel(groupBox_3);
         label_14->setObjectName(QStringLiteral("label_14"));
@@ -651,10 +651,10 @@ public:
 
         horizontalLayout_16->addItem(horizontalSpacer_16);
 
-        pushButton_Sure = new QPushButton(frame_4);
-        pushButton_Sure->setObjectName(QStringLiteral("pushButton_Sure"));
+        pushButton_Confirm = new QPushButton(frame_4);
+        pushButton_Confirm->setObjectName(QStringLiteral("pushButton_Confirm"));
 
-        horizontalLayout_16->addWidget(pushButton_Sure);
+        horizontalLayout_16->addWidget(pushButton_Confirm);
 
         pushButton_Cancel = new QPushButton(frame_4);
         pushButton_Cancel->setObjectName(QStringLiteral("pushButton_Cancel"));
@@ -911,10 +911,11 @@ public:
 
         verticalLayout_5->addWidget(direcselector);
 
-        pushButton_4 = new QPushButton(widget_5);
-        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        pushButton_Analysis = new QPushButton(widget_5);
+        pushButton_Analysis->setObjectName(QStringLiteral("pushButton_Analysis"));
+        pushButton_Analysis->setEnabled(false);
 
-        verticalLayout_5->addWidget(pushButton_4);
+        verticalLayout_5->addWidget(pushButton_Analysis);
 
         frame_5 = new QFrame(widget_5);
         frame_5->setObjectName(QStringLiteral("frame_5"));
@@ -977,7 +978,7 @@ public:
         sizePolicy1.setHeightForWidth(pushButton_R1->sizePolicy().hasHeightForWidth());
         pushButton_R1->setSizePolicy(sizePolicy1);
         pushButton_R1->setCheckable(true);
-        pushButton_R1->setChecked(false);
+        pushButton_R1->setChecked(true);
         pushButton_R1->setAutoRepeat(true);
         pushButton_R1->setAutoExclusive(true);
 
@@ -1461,6 +1462,9 @@ public:
 
         retranslateUi(MainWindow);
         QObject::connect(lineEdit_CurValue, SIGNAL(returnPressed()), MainWindow, SLOT(on_LineEdit_CurValue_Edited()));
+        QObject::connect(pushButton_Confirm, SIGNAL(clicked()), MainWindow, SLOT(on_pushButton_Confirm_clicked()));
+        QObject::connect(pushButton_Cancel, SIGNAL(clicked()), MainWindow, SLOT(on_pushButton_Cancel_clicked()));
+        QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindow, SLOT(on_pushButton_snap_Clicked()));
 
         stackedWidget->setCurrentIndex(2);
         comboBox_SelectConnectWay->setCurrentIndex(0);
@@ -1509,7 +1513,7 @@ public:
         label_12->setText(QApplication::translate("MainWindow", "\346\260\264\345\271\263\345\210\206\345\235\227\346\225\260\351\207\217", Q_NULLPTR));
         label_7->setText(QApplication::translate("MainWindow", "\345\256\275\345\272\246", Q_NULLPTR));
         label_14->setText(QApplication::translate("MainWindow", "\345\236\202\347\233\264\345\210\206\345\235\227\346\225\260\351\207\217", Q_NULLPTR));
-        pushButton_Sure->setText(QApplication::translate("MainWindow", "\347\241\256\345\256\232", Q_NULLPTR));
+        pushButton_Confirm->setText(QApplication::translate("MainWindow", "\347\241\256\345\256\232", Q_NULLPTR));
         pushButton_Cancel->setText(QApplication::translate("MainWindow", "\345\217\226\346\266\210", Q_NULLPTR));
         pushButton_ConnectCamera->setText(QApplication::translate("MainWindow", "\350\277\236\346\216\245\347\233\270\346\234\272", Q_NULLPTR));
         label_17->setText(QApplication::translate("MainWindow", "\346\233\235\345\205\211\346\227\266\351\227\264", Q_NULLPTR));
@@ -1544,7 +1548,7 @@ public:
         pushButton_Direction3->setText(QString());
         pushButton_Direction4->setText(QString());
         pushButton_Direction2->setText(QString());
-        pushButton_4->setText(QApplication::translate("MainWindow", "\345\274\200\345\247\213\345\210\206\346\236\220", Q_NULLPTR));
+        pushButton_Analysis->setText(QApplication::translate("MainWindow", "\345\274\200\345\247\213\345\210\206\346\236\220", Q_NULLPTR));
         label_34->setText(QApplication::translate("MainWindow", "\345\210\206\345\214\272\347\274\226\345\217\267\346\230\276\347\244\272\357\274\232     1-1", Q_NULLPTR));
         groupBox_11->setTitle(QApplication::translate("MainWindow", "\346\212\223\346\213\215\346\214\207\347\244\272", Q_NULLPTR));
         pushButton_G1->setText(QString());

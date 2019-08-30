@@ -231,7 +231,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_2"/>
+                 <widget class="QLineEdit" name="lineEdit_Ip"/>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer_13">
@@ -257,7 +257,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_3"/>
+                 <widget class="QLineEdit" name="lineEdit_Port"/>
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButton">
@@ -340,7 +340,7 @@
                 </widget>
                </item>
                <item row="0" column="4">
-                <widget class="QLineEdit" name="lineEdit_ScreenWidth_2"/>
+                <widget class="QLineEdit" name="lineEdit_BoxWidth"/>
                </item>
                <item row="0" column="5">
                 <spacer name="horizontalSpacer_7">
@@ -363,7 +363,7 @@
                 </widget>
                </item>
                <item row="0" column="7">
-                <widget class="QLineEdit" name="lineEdit_ScreenWidth_4"/>
+                <widget class="QLineEdit" name="lineEdit_ModuleWidth"/>
                </item>
                <item row="0" column="8">
                 <spacer name="horizontalSpacer_3">
@@ -409,7 +409,7 @@
                 </widget>
                </item>
                <item row="1" column="4">
-                <widget class="QLineEdit" name="lineEdit_ScreenWidth_3"/>
+                <widget class="QLineEdit" name="lineEdit_BoxHeight"/>
                </item>
                <item row="1" column="5">
                 <spacer name="horizontalSpacer_8">
@@ -432,7 +432,7 @@
                 </widget>
                </item>
                <item row="1" column="7">
-                <widget class="QLineEdit" name="lineEdit_ScreenWidth_5"/>
+                <widget class="QLineEdit" name="lineEdit_ModuleHeight"/>
                </item>
                <item row="1" column="8">
                 <spacer name="horizontalSpacer_4">
@@ -564,7 +564,7 @@
              </spacer>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_ScreenWidth_12"/>
+             <widget class="QLineEdit" name="lineEdit_PartHeight"/>
             </item>
             <item row="0" column="2">
              <widget class="QLabel" name="label_12">
@@ -587,7 +587,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit_ScreenWidth_10"/>
+             <widget class="QLineEdit" name="lineEdit_PartWidth"/>
             </item>
             <item row="1" column="4">
              <spacer name="horizontalSpacer_10">
@@ -603,10 +603,10 @@
              </spacer>
             </item>
             <item row="1" column="3">
-             <widget class="QLineEdit" name="lineEdit_ScreenWidth_13"/>
+             <widget class="QLineEdit" name="lineEdit_PartVertiNum"/>
             </item>
             <item row="0" column="3">
-             <widget class="QLineEdit" name="lineEdit_ScreenWidth_11"/>
+             <widget class="QLineEdit" name="lineEdit_PartHoriNum"/>
             </item>
             <item row="1" column="2">
              <widget class="QLabel" name="label_14">
@@ -644,7 +644,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_Sure">
+             <widget class="QPushButton" name="pushButton_Confirm">
               <property name="text">
                <string>确定</string>
               </property>
@@ -1249,7 +1249,10 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_4">
+            <widget class="QPushButton" name="pushButton_Analysis">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>开始分析</string>
              </property>
@@ -1370,7 +1373,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="checked">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="autoRepeat">
                     <bool>true</bool>
@@ -2165,8 +2168,8 @@
    <slot>on_LineEdit_CurValue_Edited()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>694</x>
-     <y>167</y>
+     <x>108</x>
+     <y>130</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -2174,8 +2177,59 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_Confirm</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_pushButton_Confirm_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>668</x>
+     <y>560</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>675</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_Cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_pushButton_Cancel_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>760</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>733</x>
+     <y>671</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_pushButton_snap_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>671</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>on_LineEdit_CurValue_Edited()</slot>
+  <slot>on_pushButton_Confirm_clicked()</slot>
+  <slot>on_pushButton_Cancel_clicked()</slot>
+  <slot>on_pushButton_snap_Clicked()</slot>
  </slots>
 </ui>

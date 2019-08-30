@@ -13,6 +13,9 @@
 #include "imageAlgorithm.h"
 #include "func.h"
 #include "qpicturebox.h"
+#include <QDir>
+
+
 
 PixItem *m_pixItem;
 PixItem *m_pixItem1;
@@ -68,6 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_graphicsView1->setMinimumSize(ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
     ui->verticalLayout_12->addWidget(m_graphicsView1);
 	*/
+	setAllConfigValue();
 	picBox_Show = ui->pictureBox_CameraShow;
 	picBox_Capture = ui->pictureBox_Capture;
 	QPixmap *pixmap1 = new QPixmap(":/miniLED_vs/pic/图片1.png");
@@ -78,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QPixmap icon2(":/pic/pic/d2.png");
 	QPixmap icon3(":/pic/pic/d3.png");
 	QPixmap icon4(":/pic/pic/d4.png");
-	QPixmap icon_snapSign[6];
+
 	for (int i = 0; i < 6; i++) {
 		icon_snapSign[i] = QPixmap(QString().sprintf(":/pic/pic/%d.png", i + 1));
 	}
@@ -187,6 +191,63 @@ void MainWindow::loadStyleSheet(const QString &styleSheetFile)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setAllConfigValue()
+{
+	ui->comboBox_SelectConnectWay->setCurrentText(globalVar.Proto);
+	ui->lineEdit_Ip->setText(globalVar.Ip);
+	ui->lineEdit_Port->setText(QString::number(globalVar.Port));
+	ui->lineEdit_ScreenWidth->setText(QString::number(globalVar.ScreenWidth));
+	ui->lineEdit_ScreenHeight->setText(QString::number(globalVar.ScreenHeight));
+	ui->lineEdit_BoxWidth->setText(QString::number(globalVar.BoxWidth));
+	ui->lineEdit_BoxHeight->setText(QString::number(globalVar.BoxHeight));
+	ui->lineEdit_ModuleWidth->setText(QString::number(globalVar.ModuleWidth));
+	ui->lineEdit_ModuleHeight->setText(QString::number(globalVar.ModuleHeight));
+	ui->lineEdit_PartWidth->setText(QString::number(globalVar.PartWidth));
+	ui->lineEdit_PartHeight->setText(QString::number(globalVar.PartHeight));
+	ui->lineEdit_PartHoriNum->setText(QString::number(globalVar.HoriPartNums));
+	ui->lineEdit_PartVertiNum->setText(QString::number(globalVar.VertPartNums));
+}
+
+void MainWindow::getAllConfigValueToGlobal()
+{
+	globalVar.Proto = ui->comboBox_SelectConnectWay->currentText();
+	globalVar.Ip = ui->lineEdit_Ip->text();
+	globalVar.Port = ui->lineEdit_Port->text().toInt();
+	globalVar.ScreenWidth = ui->lineEdit_ScreenWidth->text().toInt();
+	globalVar.ScreenHeight = ui->lineEdit_ScreenHeight->text().toInt();
+	globalVar.BoxWidth = ui->lineEdit_BoxWidth->text().toInt();
+	globalVar.BoxHeight = ui->lineEdit_BoxHeight->text().toInt();
+	globalVar.ModuleWidth = ui->lineEdit_ModuleWidth->text().toInt();
+	globalVar.ModuleHeight = ui->lineEdit_ModuleHeight->text().toInt();
+	globalVar.PartWidth = ui->lineEdit_PartWidth->text().toInt();
+	globalVar.PartHeight = ui->lineEdit_PartHeight->text().toInt();
+	globalVar.HoriPartNums = ui->lineEdit_PartHoriNum->text().toInt();
+	globalVar.VertPartNums = ui->lineEdit_PartVertiNum->text().toInt();
+
+}
+
+void MainWindow::setPhotoStatus()
+{
+	QPushButton *btns[] = { ui->pushButton_R1,ui->pushButton_R2 ,ui->pushButton_G1 ,ui->pushButton_G2 ,ui->pushButton_B1 ,ui->pushButton_B2 };
+	//2*(i/2+1)-1:i/2为整除:0,1,2,3,4,5->1,1,3,3,5,5;   2*(i/2): 0,1,2,3,4,5->0,0,2,2,4,4;
+	for (int i = 0; i < 6; i++) {
+		if (i < globalVar.photorgb) {
+			btns[i]->setIcon(icon_snapSign[2 * (i / 2 + 1) - 1]);
+			btns[i]->setDown(false);
+		}
+		if (i >= globalVar.photorgb) {
+			btns[i]->setIcon(icon_snapSign[2 * (i / 2)]);
+			btns[i]->setDown(false);
+		}
+		if (i == globalVar.photorgb)btns[i]->setDown(true);
+	}
+}
+
+void MainWindow::closeEvent(QCloseEvent * event)
+{
+	globalVar.writeFile();
 }
 
 void MainWindow::on_checkBox_OutlineGap_clicked(bool checked)
@@ -333,6 +394,8 @@ void mCameraCallback(byte *imgData, int width, int height)
 	//	pbx2->setData(imgData, width, height);
 	//	isSnap = false;
 	//}
+	picBox_Show->setData(imgData, width, height);
+
 }
 
 void MainWindow::on_lineEdit_ExposureTime_returnPressed()
@@ -361,6 +424,12 @@ void MainWindow::on_lineEdit_ExposureTime_returnPressed()
 
 void MainWindow::on_pushButton_Confirm_clicked()
 {
+	getAllConfigValueToGlobal();
+
+}
+void MainWindow::on_pushButton_Cancel_clicked()
+{
+	setAllConfigValue();
 
 }
 void setColor(QColor &color, int r, int g, int b) {
@@ -626,8 +695,23 @@ void MainWindow::on_addSubBtnGroup_Clicked(int id)
 
 void MainWindow::on_pushButton_snap_Clicked()
 {
-	isSnap = true;
-	ui->statusBar->showMessage("Snap ready.",1500);
+	ui->statusBar->showMessage("Snaping", 1500);
+	QPixmap *pmp = ui->pictureBox_CameraShow->getPixmap();
+	//1. 给PictureBox赋值图片。
+	ui->pictureBox_Capture->setPixmap(pmp);
+	QDir dir("photo");
+	if (!dir.exists())dir.mkpath("photo");
+	//2. 保存图片到本地。
+	pmp->save("photo/"+globalVar.getCurBmpName());
+	//3. 图片的标识（R1-B2)移动到下一个。
+	globalVar.movePhotoRGBToNext();
+	//4. 界面的状态显示photorgb。
+	setPhotoStatus();
+	//5. 有6张图才可以点击开始分析。
+	if (QFile("photo/R1.bmp").exists() && QFile("photo/R2.bmp").exists() && QFile("photo/G1.bmp").exists() && QFile("photo/G2.bmp").exists() && QFile("photo/B1.bmp").exists() && QFile("photo/B2.bmp").exists()) {
+		ui->pushButton_Analysis->setEnabled(true);
+	}
+	else ui->pushButton_Analysis->setEnabled(false);
 }
 
 void MainWindow::on_pushButton_analysis_Clicked()

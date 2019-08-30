@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<opencv2\opencv.hpp>
 using namespace cv;
@@ -5,7 +6,7 @@ using namespace std;
 #define AOIAPI extern "C" __declspec(dllexport)
 
 
-typedef struct Point3{
+typedef struct{
 	Point LT;
 	Point Center;
 	Point RB;
@@ -29,17 +30,17 @@ void sortEveryRow(Point3** dotMatrix, Point3** dstDotMatrix, Size picSize, Size 
 
 
 
-typedef struct _Thres{
+typedef struct {
 	int high;
 	int middle;
 	int low;
 }Thres;
-typedef struct _ExportInfo{
+typedef struct {
 	char* strId;
 	char* saveFname;
 	char* time;
 }ExportInfo;
-typedef struct _MarkPoints{
+typedef struct {
 	int x1, y1;
 	int x2, y2;
 	int x3, y3;
@@ -49,6 +50,7 @@ typedef struct _MarkPoints{
 //double fac[3248][4872] = { 0 };
 //bool isFirstCall = true;
 AOIAPI void initResolution(int width, int height);
+AOIAPI Size getResolution();
 #define BYTE unsigned char
 AOIAPI BYTE* Analysis(char* markPic, char* srcPic, Thres thres, float& uniform,char* strId,char* time,char* saveFName);
 //如果图片不符合，sort则会出错，然后返回的数的第一个数为5.作为标记

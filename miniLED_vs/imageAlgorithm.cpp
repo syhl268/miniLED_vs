@@ -118,9 +118,34 @@ bool ImageAlgorithm::Curvefit22(IN int * imgSrc1, IN int W, IN int H, IN uchar G
 }
 void ImageAlgorithm::CalcFacsFromSixPic(QString fnames[6], MarkPoints markpoints,float* fac[6])
 {
+	int* originLight[6];
+	float *realLight[6];
+	Size resl = getResolution();
+	int maxnum = resl.width*resl.height;
 	for (int i = 0; i < 6; i++) {
-		int* lightSums= getLightSum(imread(fnames[i].toStdString()), markpoints);
-		GL_compensation(lightSums, getResolution().width, getResolution().height, 100, 2.8, fac[i]);
+		originLight[i]= getLightSum(imread(fnames[i].toStdString()), markpoints);
+		realLight[i] = new float[maxnum];
+		GL_compensation(originLight[i], resl.width, resl.height, 100, 2.8, realLight[i]);
+	}
+	//计算R的系数k和b
+	
+	for (int i = 0; i < maxnum; i++) {
+		//RK=(Y1-Y2)/(X1-X2); 
+		fac[0][i] = (realLight[0][i] - realLight[1][i]) / (originLight[0][i] - originLight[1][i]);
+		//RB=Y-RK*X; real->Y  origin->X
+		fac[1][i] = realLight[0][i] - fac[0][i] * originLight[0][i];
+	}
+	for (int i = 0; i < maxnum; i++) {
+		//RK=(Y1-Y2)/(X1-X2); 
+		fac[2][i] = (realLight[2][i] - realLight[3][i]) / (originLight[2][i] - originLight[3][i]);
+		//RB=Y-RK*X; real->Y  origin->X
+		fac[3][i] = realLight[2][i] - fac[2][i] * originLight[2][i];
+	}
+	for (int i = 0; i < maxnum; i++) {
+		//RK=(Y1-Y2)/(X1-X2); 
+		fac[4][i] = (realLight[4][i] - realLight[5][i]) / (originLight[4][i] - originLight[5][i]);
+		//RB=Y-RK*X; real->Y  origin->X
+		fac[5][i] = realLight[4][i] - fac[4][i] * originLight[4][i];
 	}
 
 }

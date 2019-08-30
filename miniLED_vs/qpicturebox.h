@@ -13,7 +13,7 @@ public:
 
 	void setImage(QImage *pic);
 	void setPixmap(QPixmap *pixmap);
-	QPixmap* getPixmap() { return this->pix; };
+	QPixmap* getPixmap() { return new QPixmap(pix->copy(pix->rect()));}
 	void setData(uchar* data, int width, int height);
 	void setIsDrawMarkPoints(bool isdraw) {
 		this->isDrawMarkPoint = isdraw;

@@ -9,7 +9,9 @@ enum FacKind {
 enum FacRGB {
 	FACRK=0,FACRB,FACGK,FACGB,FACBK,FACBB,
 };
-
+enum PhotoRGB {
+	R1, R2, G1, G2, B1, B2
+};
 class GlobalVar : public QObject
 {
 	Q_OBJECT
@@ -17,7 +19,7 @@ class GlobalVar : public QObject
 public:
 	GlobalVar(QObject *parent=NULL,QString fileName="config.txt");
 	~GlobalVar();
-
+	QString Proto;
 	QString Ip, WorkPath;
 	int Port;
 	int ScreenWidth, ScreenHeight, BoxWidth, BoxHeight, ModuleWidth, ModuleHeight;
@@ -34,12 +36,14 @@ public:
 	//这部分数据是由MyTableModel类管理和维护的--demura的修正数据
 	FacRGB facrgb;
 	FacKind fackind;
+	PhotoRGB photorgb;
 	float *arrayRK, *arrayGK, *arrayBK;
 	float *arrayRB, *arrayGB, *arrayBB;
 	uchar* snapData;
 	void setValue(QString line);// line: "x=y"形式
 	void resetValue(QString fileName);
 	void writeFile();
+
 	float* getFacData(FacRGB frgb) {
 		switch (frgb) {
 		case FACRK:
@@ -56,6 +60,11 @@ public:
 			return arrayBB;
 		}
 	}
+	QString getCurBmpName();
+	//RK->RB,顺序移动。
+	FacRGB moveFacRGBToNext();
+	PhotoRGB movePhotoRGBToNext();
+
 };
 extern GlobalVar globalVar;
 extern QTime mytime;

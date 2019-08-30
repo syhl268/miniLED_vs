@@ -13,12 +13,13 @@ int GlobalVar::ScreenWidth = 960;
 int GlobalVar::ScreenHeight = 270;
 int GlobalVar::
 */
-
+#define _T(x) ""#x
 GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	: QObject(parent)
 {
 
 	//WorkPath = WorkPath.endsWith("/") ? WorkPath : WorkPath + "/";
+	Proto = "TCP";
 	QString fname = WorkPath + fileName;
 	QFile file(fname);
 	QString line;
@@ -48,7 +49,7 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	arrayBB = new float[ScreenWidth*ScreenHeight];
 	facrgb = FACRK;
 	fackind = K;
-
+	photorgb = R1;
 	
 }
 
@@ -60,6 +61,7 @@ void GlobalVar::setValue(QString line)
 {
 	auto strKey = line.section('=', 0, 0);
 	auto strValue = line.section('=', 1, 1);
+	if (strKey == "Proto")Proto = strValue;
 	if (strKey == "Ip")Ip = strValue;
 	if (strKey == "Port")Port = strValue.toInt();
 	if (strKey == "ScreenWidth")ScreenWidth = strValue.toInt();
@@ -106,44 +108,80 @@ void GlobalVar::resetValue(QString fileName)
 }
 void GlobalVar::writeFile()
 {
-	QString allText;
-	WorkPath = WorkPath.endsWith("/") ? WorkPath : WorkPath + "/";
-
-	QFile file(WorkPath + "config.txt");
+	QFile file("config.txt");
 	QString line;
+	if (!file.open(QIODevice::ReadWrite))return;;
 	QTextStream textStream(&file);
-	if (file.exists()) {
-		while (!file.atEnd()) 
-		{
-			line = textStream.readLine();
-			if (line.startsWith("//")) {
-				allText += (line + "\n");
-			}
-			else {
-				auto strKey = line.section('=', 0, 0);
-				auto strValue = line.section('=', 1, 1);
-				if (strKey == "Ip")allText += (strKey+"="+Ip + "\n");
-				if (strKey == "Port")allText+=(strKey + "="+QString::number(Port)+"\n");
-				if (strKey == "ScreenWidth")allText += (strKey + "=" + QString::number(ScreenWidth) + "\n");
-				if (strKey == "ScreenHeight")allText += (strKey + "=" + QString::number(ScreenHeight) + "\n");
-				if (strKey == "BoxWidth")allText += (strKey + "=" + QString::number(BoxWidth) + "\n");
-				if (strKey == "BoxHeight")allText += (strKey + "=" + QString::number(BoxHeight) + "\n");
-				if (strKey == "ModuleWidth")allText += (strKey + "=" + QString::number(ModuleWidth) + "\n");
-				if (strKey == "ModuleHeight")allText += (strKey + "=" + QString::number(ModuleHeight) + "\n");
-				if (strKey == "GapUp")allText += (strKey + "=" + QString::number(GapUp) + "\n");
-				if (strKey == "GapDown") allText += (strKey + "=" + QString::number(GapDown) + "\n");
-				if (strKey == "GapLeft") allText += (strKey + "=" + QString::number(GapLeft) + "\n");
-				if (strKey == "GapRight") allText += (strKey + "=" + QString::number(GapRight) + "\n");
-				if (strKey == "PartWidth")allText += (strKey + "=" + QString::number(PartWidth) + "\n");
-				if (strKey == "PartHeight")allText += (strKey + "=" + QString::number(PartHeight) + "\n");
-				if (strKey == "HoriPartNums")allText += (strKey + "=" + QString::number(HoriPartNums) + "\n");
-				if (strKey == "VertPartNums")allText += (strKey + "=" + QString::number(VertPartNums) + "\n");
-
-			}
-		}
-	}
+	textStream << _T(Proto) << "=" << Proto << endl;
+	textStream << _T(Ip) << "=" << Ip << endl;
+	textStream << _T(Port) << "=" << Port << endl;
+	textStream << _T(ScreenWidth) << "=" << ScreenWidth << endl;
+	textStream << _T(ScreenHeight) << "=" << ScreenHeight << endl;
+	textStream << _T(BoxWidth) << "=" << BoxWidth << endl;
+	textStream << _T(BoxHeight) << "=" << BoxHeight << endl;
+	textStream << _T(ModuleWidth) << "=" << ModuleWidth << endl;
+	textStream << _T(ModuleHeight) << "=" << ModuleHeight << endl;
+	textStream << _T(GapUp) << "=" << GapUp << endl;
+	textStream << _T(GapDown) << "=" << GapDown << endl;
+	textStream << _T(GapLeft) << "=" << GapLeft << endl;
+	textStream << _T(GapRight) << "=" << GapRight << endl;
+	textStream << _T(PartWidth) << "=" << PartWidth << endl;
+	textStream << _T(PartHeight) << "=" << PartHeight << endl;
+	textStream << _T(HoriPartNums) << "=" << HoriPartNums << endl;
+	textStream << _T(VertPartNums) << "=" << VertPartNums << endl;
+	textStream << _T(markPointFacxRD) << "=" << markPointFacxRD << endl;
+	textStream << _T(markPointFacyRD) << "=" << markPointFacyRD << endl;
+	textStream << _T(markPointFacxLD) << "=" << markPointFacxLD << endl;
+	textStream << _T(markPointFacyLD) << "=" << markPointFacyLD << endl;
+	textStream << _T(markPointFacxLU) << "=" << markPointFacxLU << endl;
+	textStream << _T(markPointFacyLU) << "=" << markPointFacyLU << endl;
+	textStream << _T(markPointFacxRU) << "=" << markPointFacxRU << endl;
+	textStream << _T(markPointFacyRU) << "=" << markPointFacyRU << endl;
 	file.close();
 	
+}
+QString GlobalVar::getCurBmpName()
+{
+	QDateTime dateTime = QDateTime::currentDateTime();
+	dateTime.toString("yyyy-MM-dd-hh-mm-ss");
+	QString fname;
+
+	switch (photorgb)
+	{
+	case R1:
+		fname = "R1.bmp";
+		break;
+	case R2:
+		fname = "R2.bmp";
+		break;
+	case G1:
+		fname = "G1.bmp";
+		break;
+	case G2:
+		fname = "G2.bmp";
+		break;
+	case B1:
+		fname = "B1.bmp";
+		break;
+	case B2:
+		fname = "B2.bmp";
+		break;
+	default:
+		fname = "R1.bmp";
+		break;
+	}
+	return QString(fname);
+}
+FacRGB GlobalVar::moveFacRGBToNext()
+{
+	if (facrgb == FACBB)facrgb = FACRK;
+	else facrgb=FacRGB(facrgb + 1);
+	return facrgb;
+}
+PhotoRGB GlobalVar::movePhotoRGBToNext() {
+	if (photorgb == B2)photorgb = R1;
+	else photorgb = PhotoRGB(photorgb + 1);
+	return photorgb;
 }
 GlobalVar globalVar;
 QTime mytime;

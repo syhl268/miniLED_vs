@@ -77,7 +77,7 @@ void QPictureBox::paintEvent(QPaintEvent * event)
 	painter->drawPixmap(this->pixRect, *pix);
 	mutex.unlock();
 	if (isDrawMarkPoint) {
-		painter->setPen(QPen(QBrush(QColor(255, 255, 0)), 10.0f));
+		painter->setPen(QPen(QBrush(QColor(255, 255, 0)), 3.0f));
 		painter->drawPoint(this->pixRect.x() + this->pixRect.width()*globalVar.markPointFacxRD, this->pixRect.y() + this->pixRect.height()*globalVar.markPointFacyRD);
 		painter->drawPoint(this->pixRect.x() + this->pixRect.width()*globalVar.markPointFacxLD, this->pixRect.y() + this->pixRect.height()*globalVar.markPointFacyLD);
 		painter->drawPoint(this->pixRect.x() + this->pixRect.width()*globalVar.markPointFacxLU, this->pixRect.y() + this->pixRect.height()*globalVar.markPointFacyLU);
