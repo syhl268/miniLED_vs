@@ -44,45 +44,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_ExposureTime->setValidator(new QRegExpValidator(QRegExp("[0-9]+$")));
     ui->lineEdit_Aperture->setValidator(new QRegExpValidator(QRegExp("[0-9]+\.+[0-9]+$")));
 
-    ui->statusBar->showMessage("就绪",3000);
+    ui->statusBar->showMessage("Ready",3000);
 
-	/*
-    QGraphicsScene *m_graphicsScene=new QGraphicsScene;
-    m_graphicsScene->setSceneRect(0,0,ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
-    QPixmap *pixmap=new QPixmap(":/miniLED_vs/CachedImage_1920_1080_POS3.jpg");
-    m_pixItem=new PixItem(pixmap);
-    m_graphicsScene->addItem(m_pixItem);
-    m_pixItem->setPos(0,0);
-    m_graphicsView=new QGraphicsView();
-    m_graphicsView->setScene(m_graphicsScene);
-    m_graphicsView->setMinimumSize(ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
-    ui->verticalLayout_11->addWidget(m_graphicsView);
-
-	
-    QGraphicsScene *m_graphicsScene1=new QGraphicsScene;
-    m_graphicsScene1->setSceneRect(0, 0, ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
-    QPixmap *pixmap1=new QPixmap(":/miniLED_vs/CachedImage_1920_1080_POS3.jpg");
-    m_pixItem1=new PixItem();
-	m_pixItem1->setPixmap(pixmap1);
-    m_graphicsScene1->addItem(m_pixItem1);
-    m_pixItem1->setPos(0,0);
-    m_graphicsView1=new QGraphicsView();
-    m_graphicsView1->setScene(m_graphicsScene1);
-    m_graphicsView1->setMinimumSize(ui->verticalLayout_11->geometry().x(), ui->verticalLayout_11->geometry().y());
-    ui->verticalLayout_12->addWidget(m_graphicsView1);
-	*/
 	setAllConfigValue();
 	picBox_Show = ui->pictureBox_CameraShow;
 	picBox_Capture = ui->pictureBox_Capture;
-	QPixmap *pixmap1 = new QPixmap(":/miniLED_vs/pic/图片1.png");
-	QPixmap *pixmap2 = new QPixmap(":/miniLED_vs/pic/图片2.png");
+	pixmap1 = new QPixmap(":/miniLED_vs/pic/图片1.png");
+	pixmap2 = new QPixmap(":/miniLED_vs/pic/图片2.png");
+	//当离线测试开启，但是本地没有测试图片时，通知用户并且将globalVar.isOfflineTest->false;
+	Mat m = imread("photo/photo/test.bmp");
+	QImage *img = new QImage(m.data, m.cols, m.rows, QImage::Format_RGB888);
+	pixmap3 = new QPixmap(QPixmap::fromImage(*img));
 	ui->pictureBox_Capture->setPixmap(pixmap2);
 	ui->pictureBox_CameraShow->setPixmap(pixmap1);
 	QPixmap icon1(":/pic/pic/d1.png");
 	QPixmap icon2(":/pic/pic/d2.png");
 	QPixmap icon3(":/pic/pic/d3.png");
 	QPixmap icon4(":/pic/pic/d4.png");
-
 	for (int i = 0; i < 6; i++) {
 		icon_snapSign[i] = QPixmap(QString().sprintf(":/pic/pic/%d.png", i + 1));
 	}
@@ -122,8 +100,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	if (client->ConnectedSuccess())ui->statusBar->showMessage("Server connectd success", 3000);
 	else ui->statusBar->showMessage("Server connectd failed", 3000);
 
+	mainMenuBtnGroup = new QButtonGroup(this);
+	mainMenuBtnGroup->addButton(ui->pushButton_ParameterSet, 0);
+	mainMenuBtnGroup->addButton(ui->pushButton_CameraCalibration, 1);
+	mainMenuBtnGroup->addButton(ui->pushButton_PickPicture, 2);
+	mainMenuBtnGroup->addButton(ui->pushButton_CalibrationResult, 3);
+	mainMenuBtnGroup->addButton(ui->pushButton_PointsCalibration, 4);
 	
-
 	colorRdoGroup = new QButtonGroup(this);
 	colorRdoGroup->addButton(ui->radioButton_testBlack);
 	colorRdoGroup->addButton(ui->radioButton_testWhite);
@@ -149,11 +132,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	addSubBtnGroup->addButton(ui->pushButton_Plus, 0);
 	addSubBtnGroup->addButton(ui->pushButton_Sub, 1);
 	connect(addSubBtnGroup, SIGNAL(buttonClicked(int)), this, SLOT(on_addSubBtnGroup_Clicked(int)));
-
+	connect(ui->pushButton_Analysis, SIGNAL(clicked()), this, SLOT(on_pushButton_analysis_Clicked()));
 	sndColor = new QColor(0, 0, 0);
 	//调试使用过的。
-
-	
 
 #if 0
 	this->arrayR = new float[globalVar.ScreenWidth*globalVar.ScreenHeight];
@@ -175,6 +156,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ImageAlgorithm::GL_compensation(imgIn, 100, 2.8f, imgOut, target);
 	qDebug() << "Aolgrithm end" << mytime.elapsed() << "ms" << endl;
 #endif
+
+	imgAlm = new ImageAlgorithm(globalVar.ScreenWidth,globalVar.ScreenHeight);
 }
 void MainWindow::loadStyleSheet(const QString &styleSheetFile)
 {
@@ -191,6 +174,15 @@ void MainWindow::loadStyleSheet(const QString &styleSheetFile)
 MainWindow::~MainWindow()
 {
     delete ui;
+	delete client;
+	delete colorBtnGroup;
+	delete sndColor;
+	delete pixmap1, pixmap2, pixmap3;
+	delete selectModle;
+	delete myModel;
+
+	//delete progressDialog;
+	delete imgAlm;
 }
 
 void MainWindow::setAllConfigValue()
@@ -204,10 +196,19 @@ void MainWindow::setAllConfigValue()
 	ui->lineEdit_BoxHeight->setText(QString::number(globalVar.BoxHeight));
 	ui->lineEdit_ModuleWidth->setText(QString::number(globalVar.ModuleWidth));
 	ui->lineEdit_ModuleHeight->setText(QString::number(globalVar.ModuleHeight));
+	ui->checkBox_OutlineGap->setChecked(globalVar.isOutlineGap);
+	ui->lineEdit_OutlineUp->setText(QString::number(globalVar.GapUp));
+	ui->lineEdit_OutlineDown->setText(QString::number(globalVar.GapDown));
+	ui->lineEdit_OutlineLeft->setText(QString::number(globalVar.GapLeft));
+	ui->lineEdit_OutlineRight->setText(QString::number(globalVar.GapRight));
 	ui->lineEdit_PartWidth->setText(QString::number(globalVar.PartWidth));
 	ui->lineEdit_PartHeight->setText(QString::number(globalVar.PartHeight));
 	ui->lineEdit_PartHoriNum->setText(QString::number(globalVar.HoriPartNums));
 	ui->lineEdit_PartVertiNum->setText(QString::number(globalVar.VertPartNums));
+	ui->checkBox_AutoDeleteLocalPhoto->setChecked(globalVar.isAutodeleteLocalPhoto);
+	ui->checkBox_OfflineTest->setChecked(globalVar.isOfflineTest);
+	ui->lineEdit_FirstGL->setText(QString::number(globalVar.firstGL));
+	ui->lineEdit_SecondGL->setText(QString::number(globalVar.secondGL));
 }
 
 void MainWindow::getAllConfigValueToGlobal()
@@ -221,11 +222,19 @@ void MainWindow::getAllConfigValueToGlobal()
 	globalVar.BoxHeight = ui->lineEdit_BoxHeight->text().toInt();
 	globalVar.ModuleWidth = ui->lineEdit_ModuleWidth->text().toInt();
 	globalVar.ModuleHeight = ui->lineEdit_ModuleHeight->text().toInt();
+	globalVar.isOutlineGap = ui->checkBox_OutlineGap->isChecked();
+	globalVar.GapUp = ui->lineEdit_OutlineUp->text().toInt();
+	globalVar.GapDown = ui->lineEdit_OutlineDown->text().toInt();
+	globalVar.GapLeft = ui->lineEdit_OutlineLeft->text().toInt();
+	globalVar.GapRight = ui->lineEdit_OutlineRight->text().toInt();
 	globalVar.PartWidth = ui->lineEdit_PartWidth->text().toInt();
 	globalVar.PartHeight = ui->lineEdit_PartHeight->text().toInt();
 	globalVar.HoriPartNums = ui->lineEdit_PartHoriNum->text().toInt();
 	globalVar.VertPartNums = ui->lineEdit_PartVertiNum->text().toInt();
-
+	globalVar.isOfflineTest = ui->checkBox_OfflineTest->isChecked();
+	globalVar.isAutodeleteLocalPhoto = ui->checkBox_AutoDeleteLocalPhoto->isChecked();
+	globalVar.firstGL = ui->lineEdit_FirstGL->text().toInt();
+	globalVar.secondGL = ui->lineEdit_SecondGL->text().toInt();
 }
 
 void MainWindow::setPhotoStatus()
@@ -244,6 +253,7 @@ void MainWindow::setPhotoStatus()
 		if (i == globalVar.photorgb)btns[i]->setDown(true);
 	}
 }
+
 
 void MainWindow::closeEvent(QCloseEvent * event)
 {
@@ -267,6 +277,22 @@ void MainWindow::on_pushButton_ParameterSet_clicked()
 
 void MainWindow::on_pushButton_CameraCalibration_clicked()
 {
+	//if (globalVar.isOfflineTest && (!QFile("photo/photo/test.bmp").exists())) {
+	//	QMessageBox::StandardButton bn = QMessageBox::information(this, "Warnning", "File photo/photo/test.bmp is not exists. Continue?", QMessageBox::Yes, QMessageBox::No);
+	//	if (bn == QMessageBox::Yes) {
+	//		globalVar.isOfflineTest = false;
+	//		ui->checkBox_OfflineTest->setChecked(globalVar.isOfflineTest);
+	//	}
+	//	if (bn == QMessageBox::No) {
+	//		this->close();
+	//	}
+	//}
+	//本地测试，使用测试用图；
+	if (globalVar.isOfflineTest)
+		ui->pictureBox_CameraShow->setPixmap(pixmap3);
+	//未连接相机，使用《请连接相机》图
+	else if(!globalVar.isConnectCameraSuccess)
+		ui->pictureBox_CameraShow->setPixmap(pixmap1);
     ui->stackedWidget->setCurrentIndex(1);
 }
 
@@ -394,6 +420,8 @@ void mCameraCallback(byte *imgData, int width, int height)
 	//	pbx2->setData(imgData, width, height);
 	//	isSnap = false;
 	//}
+	//有回传图像证明相机连接成功。
+	if(!globalVar.isConnectCameraSuccess)globalVar.isConnectCameraSuccess = true;
 	picBox_Show->setData(imgData, width, height);
 
 }
@@ -699,6 +727,7 @@ void MainWindow::on_pushButton_snap_Clicked()
 	QPixmap *pmp = ui->pictureBox_CameraShow->getPixmap();
 	//1. 给PictureBox赋值图片。
 	ui->pictureBox_Capture->setPixmap(pmp);
+	ui->pictureBox_Capture->update();
 	QDir dir("photo");
 	if (!dir.exists())dir.mkpath("photo");
 	//2. 保存图片到本地。
@@ -717,15 +746,31 @@ void MainWindow::on_pushButton_snap_Clicked()
 void MainWindow::on_pushButton_analysis_Clicked()
 {
 	//QPixmap *pix = pbx2->getPixmap();
-	//MarkPoints markpoints;
-	//markpoints.x1 = pix->width()*globalVar.markPointFacxRD;
-	//markpoints.y1 = pix->height()*globalVar.markPointFacyRD;
-	//markpoints.x2 = pix->width()*globalVar.markPointFacxLD;
-	//markpoints.y2 = pix->height()*globalVar.markPointFacyLD;
-	//markpoints.x3 = pix->width()*globalVar.markPointFacxLU;
-	//markpoints.y3 = pix->height()*globalVar.markPointFacyLU;
-	//markpoints.x4 = pix->width()*globalVar.markPointFacxRU;
-	//markpoints.y4 = pix->height()*globalVar.markPointFacyRU;
+	if (!(QFile("photo/R1.bmp").exists() && QFile("photo/R2.bmp").exists() && QFile("photo/G1.bmp").exists() && QFile("photo/G2.bmp").exists() && QFile("photo/B1.bmp").exists() && QFile("photo/B2.bmp").exists())) {
+		QMessageBox::information(this, "错误", "文件缺失", QMessageBox::Ok);
+		return;
+	}
+	QString fnames[] = { "photo/R1.bmp","photo/R2.bmp","photo/G1.bmp","photo/G2.bmp","photo/B1.bmp","photo/B2.bmp" };
+	float* facsArray[] = { globalVar.arrayRK,globalVar.arrayRB,globalVar.arrayGK,globalVar.arrayGB,globalVar.arrayBK,globalVar.arrayBB };
+	MarkPoints markpoints;
+	Mat temp = imread("photo/R1.bmp");
+	markpoints.x1 = temp.cols*globalVar.markPointFacxLU;
+	markpoints.y1 = temp.rows*globalVar.markPointFacyLU;
+	markpoints.x2 = temp.cols*globalVar.markPointFacxRU;
+	markpoints.y2 = temp.rows*globalVar.markPointFacyRU;
+	markpoints.x3 = temp.cols*globalVar.markPointFacxLD;
+	markpoints.y3 = temp.rows*globalVar.markPointFacyLD;
+	markpoints.x4 = temp.cols*globalVar.markPointFacxRD;
+	markpoints.y4 = temp.rows*globalVar.markPointFacyRD;
+	temp.release();
+	imgAlm->setCoreResolution(globalVar.ScreenWidth, globalVar.ScreenHeight);
+	imgAlm-> CalcFacsFromSixPic(fnames, markpoints,globalVar.firstGL,globalVar.secondGL, facsArray);
+	QPoint pos(ui->pushButton_CalibrationResult->width() / 2,  ui->pushButton_CalibrationResult->height() / 2);
+	QMouseEvent event0(QEvent::MouseButtonPress, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+	QApplication::sendEvent(ui->pushButton_CalibrationResult, &event0);
+	QMouseEvent event1(QEvent::MouseButtonRelease, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+	QApplication::sendEvent(ui->pushButton_CalibrationResult, &event1);
+
 	//if (globalVar.snapData == nullptr)return;
 	//int* lightData = getLightSum(pix->width(), pix->height(), globalVar.snapData, markpoints);
 	//int target;

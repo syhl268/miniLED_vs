@@ -14,6 +14,9 @@
 #include "globalvar.h"
 #include "array2d.h"
 #include <QItemSelectionModel>
+#include <QProgressDialog>
+#include "imageAlgorithm.h"
+
 
 void mCameraCallback(byte* imgData,int width,int height);
 namespace Ui {
@@ -90,11 +93,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QGraphicsScene *m_graphicsScene1;
-    QGraphicsScene *m_graphicsScene;
-    QGraphicsView *m_graphicsView;
-    QGraphicsView *m_graphicsView1;
-
     int m_timerID;
     int m_flag;
 
@@ -102,13 +100,19 @@ private:
 	QButtonGroup *colorRdoGroup;
 	QColor *sndColor;
 
+	QPixmap *pixmap1, *pixmap2,*pixmap3;
+
 	QButtonGroup *colorBtnGroup;
 	
 	MyTableModel *myModel;
 	QItemSelectionModel *selectModle;
 
-	QButtonGroup *addSubBtnGroup;
+	QButtonGroup *addSubBtnGroup,*mainMenuBtnGroup;
 	QPixmap icon_snapSign[6];
+
+	QProgressDialog *progressDialog;
+	//À„∑®∂‘œÛ°£
+	ImageAlgorithm *imgAlm;
 };
 
 #endif // MAINWINDOW_H

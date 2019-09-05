@@ -10,6 +10,7 @@
 #include<fstream>
 #include <math.h>
 #include <opencv2/core.hpp>
+#include "globalvar.h"
 using namespace std;
 using namespace cv;
 
@@ -1078,8 +1079,9 @@ BYTE* Analysis_2(char* markPic, int srcPicWidth, int srcPicHeight, BYTE* srcPicD
 	return ls;
 }
 
-int * getLightSum(Mat & aa, MarkPoints markpoints)
+void getLightSum(string fname, MarkPoints markpoints,int *lightSum)
 {
+	Mat aa = imread(fname);
 	Point2f srcCorner[4] = { Point2f(markpoints.x4, markpoints.y4), Point2f(markpoints.x3, markpoints.y3), Point2f(markpoints.x1, markpoints.y1), Point2f(markpoints.x2, markpoints.y2) };
 
 	Size picSize;
@@ -1121,20 +1123,22 @@ int * getLightSum(Mat & aa, MarkPoints markpoints)
 	imwrite( "warp.bmp", qq);
 #endif
 	Point3** dotMatrix;
-	dotMatrix = (Point3**)malloc(sizeof(Point3*)*resolution.height);
+	dotMatrix = new Point3*[resolution.height];
+	//dotMatrix = (Point3**)malloc(sizeof(Point3*)*resolution.height);
 	for (int i = 0; i < resolution.height; i++)
-		dotMatrix[i] = (Point3*)malloc(sizeof(Point3)*resolution.width);
-
+		//dotMatrix[i] = (Point3*)malloc(sizeof(Point3)*resolution.width);
+		dotMatrix[i] = new Point3[resolution.width];
 	for (int i = 0; i < resolution.height; i++)
 		for (int j = 0; j < resolution.width; j++)
 			dotMatrix[i][j] = init;
 
 
 	Point3** dstDotMatrix;
-	dstDotMatrix = (Point3**)malloc(sizeof(Point3*)*resolution.height);
+	//dstDotMatrix = (Point3**)malloc(sizeof(Point3*)*resolution.height);
+	dstDotMatrix = new Point3*[resolution.height];
 	for (int i = 0; i < resolution.height; i++)
-		dstDotMatrix[i] = (Point3*)malloc(sizeof(Point3)*resolution.width);
-
+		//dstDotMatrix[i] = (Point3*)malloc(sizeof(Point3)*resolution.width);
+		dstDotMatrix[i] = new Point3[resolution.width];
 	for (int i = 0; i < resolution.height; i++)
 		for (int j = 0; j < resolution.width; j++)
 			dstDotMatrix[i][j] = init;
@@ -1142,17 +1146,22 @@ int * getLightSum(Mat & aa, MarkPoints markpoints)
 	dotDetect(qq, 1, dotMatrix, resolution);
 	//dotDetect(qq.t(), 0, dotMatrix);
 	//Point3 dstDotMatrix[30][80] = { init };
-	bool bool_except = false;//如果处理出错，就在返回值中第一个数设置为5
 	sortEveryRow(dotMatrix, dstDotMatrix, picSize, resolution);
-
-
-	int *lightSum = new int[resolution.width*resolution.height];
+	ofstream outfile("Light.csv");
 	for (int i = 0; i < resolution.height; i++) {
 		for (int j = 0; j < resolution.width; j++) {
-			lightSum[i+j*resolution.width] = sum(qq(Rect(dstDotMatrix[i][j].LT, dstDotMatrix[i][j].RB)))(0);
+			lightSum[j+i*resolution.width] = sum(qq(Rect(dstDotMatrix[i][j].LT, dstDotMatrix[i][j].RB)))(0);
+			outfile << lightSum[j + i*resolution.width] << ",";
 		}
+		outfile << endl;
 	}
-	return lightSum;
+	outfile.close();
+	for (int i = 0; i < resolution.height; i++) {
+		delete[] dotMatrix[i];
+		delete [] dstDotMatrix[i];
+	}
+	delete[] dotMatrix;
+	delete [] dstDotMatrix;
 }
 
 

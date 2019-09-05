@@ -64,14 +64,6 @@ void QPictureBox::paintEvent(QPaintEvent * event)
 	if (pix == nullptr)return;
 	if (pix->isNull())return;
 	QPainter *painter = new QPainter(this);
-	this->pixRect.setX(this->picx+deltax);
-	this->pixRect.setY(this->picy+deltay);
-		//this->pixRect.setWidth(pix->width()*fac);
-		//this->pixRect.setHeight(pix->height()*fac);
-	this->pixRect.setWidth(this->width()*fac);
-	this->pixRect.setHeight(this->height()*fac);
-		
-
 	QMutex mutex;
 	mutex.lock();
 	painter->drawPixmap(this->pixRect, *pix);
@@ -89,8 +81,8 @@ void QPictureBox::paintEvent(QPaintEvent * event)
 void QPictureBox::resizeEvent(QResizeEvent * event)
 {
 	const QRect curRect = this->rect();
-	picw = this->width();
-	pich = this->height();
+	pixRect.setWidth(this->width());
+	pixRect.setHeight(this->height());
 	
 	repaint();
 }
@@ -114,9 +106,7 @@ void QPictureBox::mousePressEvent(QMouseEvent * event)
 void QPictureBox::mouseReleaseEvent(QMouseEvent * event)
 {
 	pressed = false;
-	this->picx += deltax;
-	this->picy += deltay;
-	deltax = deltay = 0;
+
 }
 
 void QPictureBox::mouseMoveEvent(QMouseEvent * event)
@@ -126,7 +116,9 @@ void QPictureBox::mouseMoveEvent(QMouseEvent * event)
 		cury = event->y();
 		deltax = curx - prex;
 		deltay = cury - prey;
-		
+		pixRect = QRect(pixRect.x() + deltax, pixRect.y() + deltay, pixRect.width(), pixRect.height());
+		prex = curx;
+		prey = cury;
 		repaint();
 
 	}
@@ -164,21 +156,24 @@ void QPictureBox::mouseDoubleClickEvent(QMouseEvent * event)
 void QPictureBox::wheelEvent(QWheelEvent * event)
 {
 	//if (pressed)return;
-
-
-	int delta = event->angleDelta().y();
-	delta /= abs(delta);
-	if (fac+delta*_FAC_DELTA >= _FAC_MIN && fac+delta*_FAC_DELTA <= _FAC_MAX) {
-		fac += delta*_FAC_DELTA;
-		int dx = event->x() - pixRect.x();
-		int dy = event->y() - pixRect.y();
-		int dxn =dx* fac;
-		int dyn =dy* fac;
-		deltax = dxn-dx;
-		deltay = dyn - dy;
-	}
-
-	qDebug() << fac;
+	//鼠标位置
+	int mx = event->x();
+	int my = event->y();
+	//求出放大的系数
+	//求出当前点所占位置比例
+	float xPosInRect = float(mx - pixRect.x()) / pixRect.width();
+	float yPosInRect = float(my - pixRect.y()) / pixRect.height();
+	fac = 1.0 + event->angleDelta().y() / abs(event->angleDelta().y())*0.1;
+	//放大Rect
+	pixRect.setWidth(pixRect.width()*fac);
+	pixRect.setHeight(pixRect.height()*fac);
+	//偏移Rect使其锚点不变;
+	int anchorPointx = xPosInRect*pixRect.width() + pixRect.x();
+	int anchorPointy = yPosInRect*pixRect.height() + pixRect.y();
+	int anchorDeltax = mx - anchorPointx;
+	int anchorDeltay = my - anchorPointy;
+	//算出最终pixRect
+	pixRect = QRect(pixRect.x() + anchorDeltax, pixRect.y() + anchorDeltay, pixRect.width(), pixRect.height());
 	update();
 }
 

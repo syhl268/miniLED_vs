@@ -1,7 +1,7 @@
 #include "imageAlgorithm.h"
 #include <qmath.h>
 #include <fstream>
-
+#include <QDebug>
 IntArray::IntArray() :width(0), height(0),data(NULL)
 {
 
@@ -49,11 +49,21 @@ void IntArray::fill(int globalValue)
 	}
 }
 
+ImageAlgorithm::ImageAlgorithm(int targetWidth, int targetHeight)
+{
+	initResolution(targetWidth, targetHeight);
+}
+
+void ImageAlgorithm::setCoreResolution(int targetWidth, int targetHeight)
+{
+	initResolution(targetWidth, targetHeight);
+
+}
+
 bool ImageAlgorithm::GL_compensation(IN int* imgSrc,IN int width,IN int height, IN uchar GL, IN float gamma, OUT float* imgOut)
 {
 	int target = 0;
 	if (imgSrc == nullptr)return false;
-	imgOut = new float[width*height];
 	//深度拷贝一份数据
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
@@ -65,7 +75,7 @@ bool ImageAlgorithm::GL_compensation(IN int* imgSrc,IN int width,IN int height, 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			int pix = imgSrc[i + j*width];
-			if (pix != 0 && target > pix) {
+			if (pix >=100 && target > pix) {
 				target = pix;
 			}
 		}
@@ -75,14 +85,14 @@ bool ImageAlgorithm::GL_compensation(IN int* imgSrc,IN int width,IN int height, 
 #ifdef _DEBUG
 	std::ofstream outfile("输出结果.csv");
 #endif
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
 			//QColor pix = imgSrc.pixelColor(i, j);
-			int pix = imgSrc[i + j*width];
-			if (pix != 0) {
+			int pix = imgSrc[j + i*width];
+			if (pix >=100) {
 				d = target;
 				b = pix;
-				realLight = qRound(qPow((d / b), 1.0f / gamma)*GL);
+				realLight = round(pow((float(d) / b), 1.0f / gamma)*GL);
 			}
 			else {
 				realLight = GL;
@@ -90,7 +100,7 @@ bool ImageAlgorithm::GL_compensation(IN int* imgSrc,IN int width,IN int height, 
 #ifdef _DEBUG
 			outfile << int( realLight) << ",";
 #endif
-			imgOut[i + j*width] = realLight;
+			imgOut[j + i*width] = realLight;
 		}
 		outfile << std::endl;
 
@@ -116,38 +126,48 @@ bool ImageAlgorithm::Curvefit22(IN int * imgSrc1, IN int W, IN int H, IN uchar G
 	}
 	return true;
 }
-void ImageAlgorithm::CalcFacsFromSixPic(QString fnames[6], MarkPoints markpoints,float* fac[6])
+void ImageAlgorithm::CalcFacsFromSixPic(QString fnames[6], MarkPoints markpoints,int firstGL,int secondGL, float* fac[6])
 {
-	int* originLight[6];
-	float *realLight[6];
 	Size resl = getResolution();
 	int maxnum = resl.width*resl.height;
+	int *originLight[6];
+	float *realLight[6];
+
 	for (int i = 0; i < 6; i++) {
-		originLight[i]= getLightSum(imread(fnames[i].toStdString()), markpoints);
-		realLight[i] = new float[maxnum];
-		GL_compensation(originLight[i], resl.width, resl.height, 100, 2.8, realLight[i]);
-	}
-	//计算R的系数k和b
-	
-	for (int i = 0; i < maxnum; i++) {
-		//RK=(Y1-Y2)/(X1-X2); 
-		fac[0][i] = (realLight[0][i] - realLight[1][i]) / (originLight[0][i] - originLight[1][i]);
-		//RB=Y-RK*X; real->Y  origin->X
-		fac[1][i] = realLight[0][i] - fac[0][i] * originLight[0][i];
+		originLight[i] = new int[resl.width*resl.height];
+		realLight[i] = new float[resl.width*resl.height];
+		getLightSum(fnames[i].toStdString(), markpoints,originLight[i]);
+
+		if(i%2==0)
+			GL_compensation(originLight[i], resl.width, resl.height, firstGL, 2.8, realLight[i]);
+		else
+			GL_compensation(originLight[i], resl.width, resl.height, secondGL, 2.8, realLight[i]);
+
 	}
 	for (int i = 0; i < maxnum; i++) {
 		//RK=(Y1-Y2)/(X1-X2); 
-		fac[2][i] = (realLight[2][i] - realLight[3][i]) / (originLight[2][i] - originLight[3][i]);
+		fac[0][i] = float(realLight[0][i] - realLight[1][i]) / (firstGL - secondGL);
 		//RB=Y-RK*X; real->Y  origin->X
-		fac[3][i] = realLight[2][i] - fac[2][i] * originLight[2][i];
-	}
-	for (int i = 0; i < maxnum; i++) {
-		//RK=(Y1-Y2)/(X1-X2); 
-		fac[4][i] = (realLight[4][i] - realLight[5][i]) / (originLight[4][i] - originLight[5][i]);
-		//RB=Y-RK*X; real->Y  origin->X
-		fac[5][i] = realLight[4][i] - fac[4][i] * originLight[4][i];
+		fac[1][i] = realLight[0][i] - fac[0][i] * firstGL;
 	}
 
+	for (int i = 0; i < maxnum; i++) {
+			//RK=(Y1-Y2)/(X1-X2); 
+		fac[2][i] = float(realLight[2][i] - realLight[3][i]) / (firstGL-secondGL);
+		//RB=Y-RK*X; real->Y  origin->X
+		fac[3][i] = realLight[2][i] - fac[2][i] * firstGL;
+	}
+
+	for (int i = 0; i < maxnum; i++) {
+		//RK=(Y1-Y2)/(X1-X2); 
+		fac[4][i] = float(realLight[4][i] - realLight[5][i]) / (firstGL - secondGL);
+		//RB=Y-RK*X; real->Y  origin->X
+		fac[5][i] = realLight[4][i] - fac[4][i] * firstGL;
+	}
+	for (int i = 0; i < 6; i++) {
+		delete[] originLight[i];
+		delete[] realLight[i];
+	}
 }
 ImageAlgorithm::~ImageAlgorithm()
 {

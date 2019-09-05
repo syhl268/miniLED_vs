@@ -17,5 +17,9 @@
         <file>pic/4.png</file>
         <file>pic/5.png</file>
         <file>pic/6.png</file>
+        <file>pic/switch_black_off.png</file>
+        <file>pic/switch_black_on.png</file>
+        <file>pic/switch_off.png</file>
+        <file>pic/switch_on.png</file>
     </qresource>
 </RCC>

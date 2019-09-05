@@ -23,6 +23,7 @@ public:
 	QString Ip, WorkPath;
 	int Port;
 	int ScreenWidth, ScreenHeight, BoxWidth, BoxHeight, ModuleWidth, ModuleHeight;
+	bool isOutlineGap;
 	int GapUp, GapDown, GapLeft, GapRight;
 	int PartWidth, PartHeight, HoriPartNums, VertPartNums;
 	//右下角mark点所在图片的比例
@@ -39,7 +40,15 @@ public:
 	PhotoRGB photorgb;
 	float *arrayRK, *arrayGK, *arrayBK;
 	float *arrayRB, *arrayGB, *arrayBB;
-	uchar* snapData;
+	bool isAutodeleteLocalPhoto;
+	bool isOfflineTest;
+	int firstGL, secondGL;
+	bool isConnectCameraSuccess;
+
+	//int *originLightR1, *originLightR2, *originLightG1, *originLightG2, *originLightB1, *originLightB2;
+	//float *realLightR1, *realLightR2, *realLightG1, *realLightG2, *realLightB1, *realLightB2;
+
+
 	void setValue(QString line);// line: "x=y"形式
 	void resetValue(QString fileName);
 	void writeFile();

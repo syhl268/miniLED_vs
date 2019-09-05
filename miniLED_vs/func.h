@@ -69,4 +69,4 @@ AOIAPI int* statistic(BYTE* srcdata, int srcwidth, int srcheight);
 AOIAPI Scalar getColor(int min, int max, int current);
 AOIAPI Scalar getColor_1(int min, int max, int current);
 
-int* getLightSum(Mat &mat, MarkPoints markpoints);
+AOIAPI void getLightSum(string, MarkPoints markpoints, int *lightSum);

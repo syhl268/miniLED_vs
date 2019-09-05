@@ -20,17 +20,21 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 
 	//WorkPath = WorkPath.endsWith("/") ? WorkPath : WorkPath + "/";
 	Proto = "TCP";
+	isOfflineTest = true;
+	isOutlineGap = false;
+	isAutodeleteLocalPhoto = true;
+
 	QString fname = WorkPath + fileName;
 	QFile file(fname);
 	QString line;
 	if (!file.exists()) {
-		
+
 	}
-	else 
+	else
 	{
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))return;
 		QTextStream textStream(&file);
-		while (!textStream.atEnd()) 
+		while (!textStream.atEnd())
 		{
 			line = textStream.readLine();
 			if (line.startsWith("//"))continue;
@@ -38,7 +42,6 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 		}
 		file.close();
 	}
-
 	//mura系数不能从config.txt文件中读出来，只能从修正数据文件中读出
 	//先实现为给初始化
 	arrayRK = new float[ScreenWidth*ScreenHeight];
@@ -47,14 +50,44 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	arrayRB = new float[ScreenWidth*ScreenHeight];
 	arrayGB = new float[ScreenWidth*ScreenHeight];
 	arrayBB = new float[ScreenWidth*ScreenHeight];
+	for (int i = 0; i < ScreenWidth*ScreenHeight; i++) {
+		arrayRK[i] = 0.0;
+		arrayRB[i] = 0.0;
+		arrayGK[i] = 0.0;
+		arrayGB[i] = 0.0;
+		arrayBK[i] = 0.0;
+		arrayBB[i] = 0.0;
+	}
+	firstGL = 100;
+	secondGL = 80;
+	//originLightB1 = new int[ScreenWidth*ScreenHeight];
+	//originLightB2 = new int[ScreenWidth*ScreenHeight];
+	//originLightG1 = new int[ScreenWidth*ScreenHeight];
+	//originLightG2 = new int[ScreenWidth*ScreenHeight];
+	//originLightR1 = new int[ScreenWidth*ScreenHeight];
+	//originLightR2 = new int[ScreenWidth*ScreenHeight];
+	//realLightB1 = new float[ScreenWidth*ScreenHeight];
+	//realLightB2 = new float[ScreenWidth*ScreenHeight];
+	//realLightG1 = new float[ScreenWidth*ScreenHeight];
+	//realLightG2 = new float[ScreenWidth*ScreenHeight];
+	//realLightR1 = new float[ScreenWidth*ScreenHeight];
+	//realLightR2 = new float[ScreenWidth*ScreenHeight];
+
 	facrgb = FACRK;
 	fackind = K;
 	photorgb = R1;
-	
+	isConnectCameraSuccess = false;
+
 }
 
 GlobalVar::~GlobalVar()
 {
+	delete arrayRK;
+	delete arrayRB;
+	delete arrayGK;
+	delete arrayGB;
+	delete arrayBK;
+	delete arrayBB;
 }
 
 void GlobalVar::setValue(QString line)
@@ -70,6 +103,7 @@ void GlobalVar::setValue(QString line)
 	if (strKey == "BoxHeight")BoxHeight = strValue.toInt();
 	if (strKey == "ModuleWidth")ModuleWidth = strValue.toInt();
 	if (strKey == "ModuleHeight")ModuleHeight = strValue.toInt();
+	if (strKey == _T(isOutlineGap))isOutlineGap = strValue.toInt();
 	if (strKey == "GapUp")GapUp = strValue.toInt();
 	if (strKey == "GapDown")GapDown = strValue.toInt();
 	if (strKey == "GapLeft")GapLeft = strValue.toInt();
@@ -86,6 +120,10 @@ void GlobalVar::setValue(QString line)
 	if (strKey == "markPointFacyLU")markPointFacyLU = strValue.toFloat();
 	if (strKey == "markPointFacxRU")markPointFacxRU = strValue.toFloat();
 	if (strKey == "markPointFacyRU")markPointFacyRU = strValue.toFloat();
+	if (strKey == _T(isAutodeleteLocalPhoto))isAutodeleteLocalPhoto = strValue.toInt();
+	if (strKey == _T(isOfflineTest))isOfflineTest = strValue.toInt();
+	if (strKey == _T(firstGL))firstGL = strValue.toInt();
+	if (strKey == _T(secondGL))secondGL = strValue.toInt();
 
 }
 void GlobalVar::resetValue(QString fileName)
@@ -121,6 +159,7 @@ void GlobalVar::writeFile()
 	textStream << _T(BoxHeight) << "=" << BoxHeight << endl;
 	textStream << _T(ModuleWidth) << "=" << ModuleWidth << endl;
 	textStream << _T(ModuleHeight) << "=" << ModuleHeight << endl;
+	textStream << _T(isOutlineGap) << "=" << isOutlineGap << endl;
 	textStream << _T(GapUp) << "=" << GapUp << endl;
 	textStream << _T(GapDown) << "=" << GapDown << endl;
 	textStream << _T(GapLeft) << "=" << GapLeft << endl;
@@ -137,6 +176,10 @@ void GlobalVar::writeFile()
 	textStream << _T(markPointFacyLU) << "=" << markPointFacyLU << endl;
 	textStream << _T(markPointFacxRU) << "=" << markPointFacxRU << endl;
 	textStream << _T(markPointFacyRU) << "=" << markPointFacyRU << endl;
+	textStream << _T(isOfflineTest) << "=" << isOfflineTest << endl;
+	textStream << _T(isAutodeleteLocalPhoto) << "=" << isAutodeleteLocalPhoto << endl;
+	textStream << _T(firstGL) << "=" << firstGL << endl;
+	textStream << _T(secondGL) << "=" << secondGL << endl;
 	file.close();
 	
 }
