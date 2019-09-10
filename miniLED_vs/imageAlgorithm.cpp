@@ -2,6 +2,7 @@
 #include <qmath.h>
 #include <fstream>
 #include <QDebug>
+
 IntArray::IntArray() :width(0), height(0),data(NULL)
 {
 
@@ -130,43 +131,56 @@ void ImageAlgorithm::CalcFacsFromSixPic(QString fnames[6], MarkPoints markpoints
 {
 	Size resl = getResolution();
 	int maxnum = resl.width*resl.height;
-	int *originLight[6];
-	float *realLight[6];
+
 
 	for (int i = 0; i < 6; i++) {
-		originLight[i] = new int[resl.width*resl.height];
-		realLight[i] = new float[resl.width*resl.height];
-		getLightSum(fnames[i].toStdString(), markpoints,originLight[i]);
+
+		getLightSum_AutoSave(fnames[i].toStdString(), markpoints,globalVar.originLight[i],(PhotoRGB)i);
 
 		if(i%2==0)
-			GL_compensation(originLight[i], resl.width, resl.height, firstGL, 2.8, realLight[i]);
+			GL_compensation(globalVar.originLight[i], resl.width, resl.height, firstGL, 2.8, globalVar.realLight[i]);
 		else
-			GL_compensation(originLight[i], resl.width, resl.height, secondGL, 2.8, realLight[i]);
-
+			GL_compensation(globalVar.originLight[i], resl.width, resl.height, secondGL, 2.8, globalVar.realLight[i]);
+#ifdef __PHOTOFILEMANAGER__
+		QString srcLightCsvName = globalVar.photoFileManager.getCsvFileName((PhotoRGB)i, PhotoFileManager::PHOTO_SRC_LIGHT);
+		ofstream outStm(srcLightCsvName.toStdString());
+		for (int k = 0; k < resl.height; k++) {
+			for (int j = 0; j < resl.width; j++) {
+				outStm << globalVar.originLight[i][j + k*resl.width] << ",";
+			}
+			outStm << endl;
+		}
+		outStm.close();
+		QString srcLightCsvName1 = globalVar.photoFileManager.getCsvFileName((PhotoRGB)i, PhotoFileManager::PHOTO_DST_LIGHT);
+		ofstream outStm1(srcLightCsvName1.toStdString());
+		for (int k = 0; k < resl.height; k++) {
+			for (int j = 0; j < resl.width; j++) {
+				outStm1 << globalVar.realLight[i][j + k*resl.width] << ",";
+			}
+			outStm1 << endl;
+		}
+		outStm1.close();
+#endif
 	}
 	for (int i = 0; i < maxnum; i++) {
 		//RK=(Y1-Y2)/(X1-X2); 
-		fac[0][i] = float(realLight[0][i] - realLight[1][i]) / (firstGL - secondGL);
+		fac[0][i] = float(globalVar.realLight[0][i] - globalVar.realLight[1][i]) / (firstGL - secondGL);
 		//RB=Y-RK*X; real->Y  origin->X
-		fac[1][i] = realLight[0][i] - fac[0][i] * firstGL;
+		fac[1][i] = globalVar.realLight[0][i] - fac[0][i] * firstGL;
 	}
 
 	for (int i = 0; i < maxnum; i++) {
 			//RK=(Y1-Y2)/(X1-X2); 
-		fac[2][i] = float(realLight[2][i] - realLight[3][i]) / (firstGL-secondGL);
+		fac[2][i] = float(globalVar.realLight[2][i] - globalVar.realLight[3][i]) / (firstGL-secondGL);
 		//RB=Y-RK*X; real->Y  origin->X
-		fac[3][i] = realLight[2][i] - fac[2][i] * firstGL;
+		fac[3][i] = globalVar.realLight[2][i] - fac[2][i] * firstGL;
 	}
 
 	for (int i = 0; i < maxnum; i++) {
 		//RK=(Y1-Y2)/(X1-X2); 
-		fac[4][i] = float(realLight[4][i] - realLight[5][i]) / (firstGL - secondGL);
+		fac[4][i] = float(globalVar.realLight[4][i] - globalVar.realLight[5][i]) / (firstGL - secondGL);
 		//RB=Y-RK*X; real->Y  origin->X
-		fac[5][i] = realLight[4][i] - fac[4][i] * firstGL;
-	}
-	for (int i = 0; i < 6; i++) {
-		delete[] originLight[i];
-		delete[] realLight[i];
+		fac[5][i] = globalVar.realLight[4][i] - fac[4][i] * firstGL;
 	}
 }
 ImageAlgorithm::~ImageAlgorithm()

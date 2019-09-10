@@ -6,17 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1303</width>
-    <height>702</height>
+    <width>1281</width>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>箱体校正</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,9">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1,1,1,6">
+      <item>
+       <spacer name="horizontalSpacer_17">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QPushButton" name="pushButton_ParameterSet">
         <property name="minimumSize">
@@ -151,7 +164,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,3">
@@ -163,7 +176,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_9" stretch="2,3,2,4,4">
+          <layout class="QVBoxLayout" name="verticalLayout_9" stretch="2,4,3,2,4,4">
            <item>
             <widget class="QGroupBox" name="groupBox_4">
              <property name="title">
@@ -399,6 +412,75 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_5">
+             <property name="title">
+              <string>工作路径</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <item>
+               <widget class="QLineEdit" name="lineEdit_WorkPath">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>400</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_Scan">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>浏览……</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_18">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>227</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -2412,109 +2494,171 @@
        <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="0">
         <item>
          <widget class="QWidget" name="widget_9" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="3,11">
            <item>
-            <widget class="QSplitter" name="splitter_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <widget class="QScrollArea" name="scrollArea">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(70, 70, 70);</string>
              </property>
-             <widget class="QScrollArea" name="scrollArea">
-              <property name="widgetResizable">
-               <bool>true</bool>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>260</width>
+                <height>547</height>
+               </rect>
               </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>201</width>
-                 <height>532</height>
-                </rect>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_6">
-                <item>
-                 <widget class="QPushButton" name="pushButton_6">
-                  <property name="text">
-                   <string>生成亮度图</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_7">
-                  <property name="text">
-                   <string>生成系数</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_8">
-                  <property name="text">
-                   <string>导出系数</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_9">
-                  <property name="text">
-                   <string>保存系数到接收卡</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBox_5">
-                  <property name="title">
-                   <string>校正情况</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_7">
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_3">
-                     <property name="text">
-                      <string>关闭校正</string>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_4">
-                     <property name="text">
-                      <string>电脑模拟校正</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_5">
-                     <property name="text">
-                      <string>接收卡校正</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBox_13">
-                  <property name="title">
-                   <string>颜色矫正</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </widget>
-             <widget class="QSplitter" name="splitter">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <widget class="QGroupBox" name="groupBox_6">
-               <property name="title">
-                <string>颜色校正</string>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1,5,1,5">
-                <item>
+              <layout class="QVBoxLayout" name="verticalLayout_20">
+               <item>
+                <widget class="QPushButton" name="pushButton_6">
+                 <property name="text">
+                  <string>生成亮度图</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_7">
+                 <property name="text">
+                  <string>生成系数</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_6">
+                 <property name="title">
+                  <string>检查</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_21">
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_14">
+                    <property name="title">
+                     <string>图像代号</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_6">
+                     <item row="0" column="0">
+                      <widget class="QRadioButton" name="radioButton_R1">
+                       <property name="text">
+                        <string>R1</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QRadioButton" name="radioButton_G1">
+                       <property name="text">
+                        <string>G1</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QRadioButton" name="radioButton_R2">
+                       <property name="text">
+                        <string>R2</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QRadioButton" name="radioButton_G2">
+                       <property name="text">
+                        <string>G2</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="QRadioButton" name="radioButton_B2">
+                       <property name="text">
+                        <string>B2</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QRadioButton" name="radioButton_B1">
+                       <property name="text">
+                        <string>B1</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_15">
+                    <property name="title">
+                     <string>检查选项</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_8">
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_PhotoSrc">
+                       <property name="text">
+                        <string>原图</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_PhotoSrcLight">
+                       <property name="text">
+                        <string>原图亮度图</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_PhotoSrcWarp">
+                       <property name="text">
+                        <string>原图裁剪图</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_PhotoRst">
+                       <property name="text">
+                        <string>补偿后亮度图</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_8">
+                 <property name="text">
+                  <string>导出系数</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_9">
+                 <property name="text">
+                  <string>保存系数到接收卡</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_13">
+                 <property name="title">
+                  <string>屏幕显示</string>
+                 </property>
                  <widget class="QWidget" name="widget_10" native="true">
-                  <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,1,1,1,1">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>10</y>
+                    <width>238</width>
+                    <height>81</height>
+                   </rect>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0">
                    <item>
                     <widget class="QRadioButton" name="radioButton_testRed">
                      <property name="text">
@@ -2540,78 +2684,160 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QRadioButton" name="radioButton_testWhite">
-                     <property name="text">
-                      <string>白</string>
+                    <widget class="QSpinBox" name="spinBox_GL">
+                     <property name="maximum">
+                      <number>255</number>
                      </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_testBlack">
-                     <property name="text">
-                      <string>黑</string>
+                     <property name="value">
+                      <number>255</number>
                      </property>
                     </widget>
                    </item>
                   </layout>
                  </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_33">
-                  <property name="text">
-                   <string>亮度值</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="lineEdit_brightness">
-                  <property name="minimumSize">
-                   <size>
-                    <width>80</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>50</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>255</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDial" name="dial_brightness">
-                  <property name="maximum">
-                   <number>255</number>
-                  </property>
-                  <property name="value">
-                   <number>255</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_14">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </widget>
-              <widget class="QPictureBox" name="widget_11" native="true"/>
+                </widget>
+               </item>
+              </layout>
              </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_7">
+             <property name="title">
+              <string>状态显示</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2,12">
+              <item>
+               <widget class="QScrollArea" name="scrollArea_2">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(70, 70, 70);</string>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>937</width>
+                   <height>71</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>当前亮度</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_CurLIght">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>40</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_19">
+                    <property name="text">
+                     <string>坐标X</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_CurX">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>40</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_27">
+                    <property name="text">
+                     <string>坐标Y</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_CurY">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>40</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_29">
+                    <property name="text">
+                     <string>校正方程</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_CaliEquation">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>80</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_14">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>180</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPictureBox" name="pictureBox_ResultShow" native="true"/>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -3048,7 +3274,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1303</width>
+     <width>1281</width>
      <height>23</height>
     </rect>
    </property>
@@ -3099,8 +3325,8 @@
    <slot>on_LineEdit_CurValue_Edited()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>108</x>
-     <y>130</y>
+     <x>695</x>
+     <y>162</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -3115,8 +3341,8 @@
    <slot>on_pushButton_Confirm_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>668</x>
-     <y>560</y>
+     <x>673</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
      <x>185</x>
@@ -3132,7 +3358,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>754</x>
-     <y>580</y>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
      <x>733</x>
@@ -3148,11 +3374,27 @@
    <hints>
     <hint type="sourcelabel">
      <x>126</x>
-     <y>185</y>
+     <y>168</y>
     </hint>
     <hint type="destinationlabel">
      <x>189</x>
      <y>671</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_GL</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_SpinBox_changed_textChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>524</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>589</y>
     </hint>
    </hints>
   </connection>
@@ -3163,5 +3405,7 @@
   <slot>on_pushButton_Cancel_clicked()</slot>
   <slot>on_pushButton_snap_Clicked()</slot>
   <slot>on_pushButton_analysis_Clicked()</slot>
+  <slot>on_SpinBox_changed_textChanged(int)</slot>
+  <slot>on_pushButton_Scan_clicked()</slot>
  </slots>
 </ui>

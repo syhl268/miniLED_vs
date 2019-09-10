@@ -71,7 +71,7 @@ private slots:
 
 	void on_colorRdoGroup_check(int, bool);
 
-	void on_lineEdit_brightness_textChanged(QString);
+	void on_SpinBox_changed_textChanged(int);
 
 	void on_colorBtnGroup_checked(int);
 
@@ -88,6 +88,11 @@ private slots:
 	void on_pushButton_snap_Clicked();
 
 	void on_pushButton_analysis_Clicked();
+
+	void on_pushButton_Scan_clicked();
+
+	void on_checkRadioButtonGroup_Clicked(int id);
+
 
 
 private:
@@ -107,7 +112,7 @@ private:
 	MyTableModel *myModel;
 	QItemSelectionModel *selectModle;
 
-	QButtonGroup *addSubBtnGroup,*mainMenuBtnGroup;
+	QButtonGroup *addSubBtnGroup,*mainMenuBtnGroup,*checkColorRadioButtonGroup,*checkOptionRadioButtonGroup;
 	QPixmap icon_snapSign[6];
 
 	QProgressDialog *progressDialog;

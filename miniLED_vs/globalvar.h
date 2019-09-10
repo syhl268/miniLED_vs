@@ -2,16 +2,9 @@
 
 #include <QObject>
 #include <QTime>
+#include "Util.h"
+#include "PhotoFileManager.h"
 
-enum FacKind {
-	K=0,B,
-};
-enum FacRGB {
-	FACRK=0,FACRB,FACGK,FACGB,FACBK,FACBB,
-};
-enum PhotoRGB {
-	R1, R2, G1, G2, B1, B2
-};
 class GlobalVar : public QObject
 {
 	Q_OBJECT
@@ -44,7 +37,10 @@ public:
 	bool isOfflineTest;
 	int firstGL, secondGL;
 	bool isConnectCameraSuccess;
+	PhotoFileManager photoFileManager;
 
+	int *originLight[6];
+	float *realLight[6];
 	//int *originLightR1, *originLightR2, *originLightG1, *originLightG2, *originLightB1, *originLightB2;
 	//float *realLightR1, *realLightR2, *realLightG1, *realLightG2, *realLightB1, *realLightB2;
 
@@ -52,7 +48,6 @@ public:
 	void setValue(QString line);// line: "x=y"–Œ Ω
 	void resetValue(QString fileName);
 	void writeFile();
-
 	float* getFacData(FacRGB frgb) {
 		switch (frgb) {
 		case FACRK:

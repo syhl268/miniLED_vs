@@ -28,4 +28,4 @@ isOfflineTest=1
 isAutodeleteLocalPhoto=0
 firstGL=100
 secondGL=80
-
+WorkPath=D:/LWH/miniLED_vs/miniLED_vs/pic

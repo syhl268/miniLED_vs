@@ -208,6 +208,7 @@ QCheckBox {
 	color:rgb(223,219,210);
 	padding: 2px;
 }
+
 QCheckBox:hover {
 	border-radius:4px;
 	border-style:solid;
@@ -243,7 +244,16 @@ QCheckBox::indicator:checked {
   	background-color:qlineargradient(spread:pad, x1:0.5, y1:0.7, x2:0.5, y2:0.3, stop:0 rgba(87, 97, 106, 255), stop:1 rgba(93, 103, 113, 255));
 	*/
 }
-
+QRadioButton::indicator:unchecked{
+	image: url(:/pic/pic/switch_off.png);
+	width: 23px;
+	height: 23px;
+}
+QRadioButton::indicator:checked{
+	image: url(:/pic/pic/switch_on.png);
+	width: 23px;
+	height: 23px;
+}
 QStatusBar {
 	color:rgb(240,240,240);
 }
@@ -256,4 +266,29 @@ QGroupBox{
 QGroupBox::title{
 	subcontrol-origin: margin;
 	padding: 10 3px;
+}
+QScrollArea{
+	background-color: rgb(56,56,56);
+	color:rgb(223,219,210);
+	padding: 2px;
+}
+
+QSlider::handle:horizontal {
+    border-image:url(:/pic/pic/slider_index.png);
+    width: 13px;
+    height: 13px;
+}
+
+
+QSlider::add-page:horizontal{
+    border: 1px solid #999999;
+    height: 8px;
+    background:background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(27, 5, 27, 255), stop:0.25 rgba(99, 20, 102, 255), stop:0.5 rgba(154, 30, 158, 255), stop:1 rgba(173, 57, 176, 255));;
+}
+
+QSlider::sub-page:horizontal{     
+                          
+    border: 1px solid #999999;
+    height: 8px;
+    background: background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(27, 5, 27, 255), stop:0.25 rgba(99, 20, 102, 255), stop:0.5 rgba(154, 30, 158, 255), stop:1 rgba(173, 57, 176, 255));            
 }

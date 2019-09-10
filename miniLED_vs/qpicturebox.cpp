@@ -100,13 +100,13 @@ void QPictureBox::mousePressEvent(QMouseEvent * event)
 	pressed = true;
 	prex = event->x();
 	prey = event->y();
-
+	emit SIGNAL(mousePressed(event));
 }
 
 void QPictureBox::mouseReleaseEvent(QMouseEvent * event)
 {
 	pressed = false;
-
+	emit SIGNAL(mouseReleased(event));
 }
 
 void QPictureBox::mouseMoveEvent(QMouseEvent * event)
@@ -122,7 +122,7 @@ void QPictureBox::mouseMoveEvent(QMouseEvent * event)
 		repaint();
 
 	}
-	
+	emit SIGNAL(mouseMoved(event));
 }
 
 void QPictureBox::mouseDoubleClickEvent(QMouseEvent * event)

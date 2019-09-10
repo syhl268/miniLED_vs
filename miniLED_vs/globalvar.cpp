@@ -28,7 +28,6 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	QFile file(fname);
 	QString line;
 	if (!file.exists()) {
-
 	}
 	else
 	{
@@ -77,7 +76,10 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	fackind = K;
 	photorgb = R1;
 	isConnectCameraSuccess = false;
-
+	for (int i = 0; i < 6; i++) {
+		originLight[i] = new int[ScreenWidth*ScreenHeight];
+		realLight[i] = new float[ScreenWidth*ScreenHeight];
+	}
 }
 
 GlobalVar::~GlobalVar()
@@ -124,7 +126,7 @@ void GlobalVar::setValue(QString line)
 	if (strKey == _T(isOfflineTest))isOfflineTest = strValue.toInt();
 	if (strKey == _T(firstGL))firstGL = strValue.toInt();
 	if (strKey == _T(secondGL))secondGL = strValue.toInt();
-
+	if (strKey == _T(WorkPath))WorkPath = strValue;
 }
 void GlobalVar::resetValue(QString fileName)
 {
@@ -180,6 +182,7 @@ void GlobalVar::writeFile()
 	textStream << _T(isAutodeleteLocalPhoto) << "=" << isAutodeleteLocalPhoto << endl;
 	textStream << _T(firstGL) << "=" << firstGL << endl;
 	textStream << _T(secondGL) << "=" << secondGL << endl;
+	textStream << _T(WorkPath) << "=" << WorkPath << endl;
 	file.close();
 	
 }

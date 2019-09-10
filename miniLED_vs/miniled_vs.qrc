@@ -21,5 +21,9 @@
         <file>pic/switch_black_on.png</file>
         <file>pic/switch_off.png</file>
         <file>pic/switch_on.png</file>
+        <file>pic/slider_background.png</file>
+        <file>pic/slider_index.png</file>
+        <file>pic/addpage.png</file>
+        <file>pic/subpage.png</file>
     </qresource>
 </RCC>

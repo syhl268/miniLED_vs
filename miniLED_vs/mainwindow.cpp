@@ -14,7 +14,7 @@
 #include "func.h"
 #include "qpicturebox.h"
 #include <QDir>
-
+#include <QFileDialog>
 
 
 PixItem *m_pixItem;
@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #ifdef _DEBUG
 	mytime.start();
 	qDebug() << "timer start:" << mytime.elapsed() << "ms" << endl;
+	qDebug() << QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss") << endl;
 #endif // _DEBUG
 
 	//this->loadStyleSheet(":/miniLED_vs/myStyleSheet.qss");
@@ -108,17 +109,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	mainMenuBtnGroup->addButton(ui->pushButton_PointsCalibration, 4);
 	
 	colorRdoGroup = new QButtonGroup(this);
-	colorRdoGroup->addButton(ui->radioButton_testBlack);
-	colorRdoGroup->addButton(ui->radioButton_testWhite);
-	colorRdoGroup->addButton(ui->radioButton_testRed);
-	colorRdoGroup->addButton(ui->radioButton_testGreen);
-	colorRdoGroup->addButton(ui->radioButton_testBlue);
+	//colorRdoGroup->addButton(ui->radioButton_testBlack);
+	//colorRdoGroup->addButton(ui->radioButton_testWhite);
+	colorRdoGroup->addButton(ui->radioButton_testRed,0);
+	colorRdoGroup->addButton(ui->radioButton_testGreen,1);
+	colorRdoGroup->addButton(ui->radioButton_testBlue,2);
 
-	colorRdoGroup->setId(ui->radioButton_testRed, 0);
-	colorRdoGroup->setId(ui->radioButton_testGreen, 1);
-	colorRdoGroup->setId(ui->radioButton_testBlue, 2);
-	colorRdoGroup->setId(ui->radioButton_testWhite, 3);
-	colorRdoGroup->setId(ui->radioButton_testBlack, 4);
 	connect(colorRdoGroup, SIGNAL(buttonToggled(int, bool)), this, SLOT(on_colorRdoGroup_check(int, bool)));
 
 	colorBtnGroup = new QButtonGroup(this);
@@ -134,6 +130,23 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(addSubBtnGroup, SIGNAL(buttonClicked(int)), this, SLOT(on_addSubBtnGroup_Clicked(int)));
 	connect(ui->pushButton_Analysis, SIGNAL(clicked()), this, SLOT(on_pushButton_analysis_Clicked()));
 	sndColor = new QColor(0, 0, 0);
+
+	checkColorRadioButtonGroup = new QButtonGroup(this);
+	checkColorRadioButtonGroup->addButton(ui->radioButton_R1, 0);
+	checkColorRadioButtonGroup->addButton(ui->radioButton_R2, 1);
+	checkColorRadioButtonGroup->addButton(ui->radioButton_G1, 2);
+	checkColorRadioButtonGroup->addButton(ui->radioButton_G2, 3);
+	checkColorRadioButtonGroup->addButton(ui->radioButton_B1, 4);
+	checkColorRadioButtonGroup->addButton(ui->radioButton_B2, 5);
+	connect(checkColorRadioButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(on_checkRadioButtonGroup_Clicked(int)));
+
+	checkOptionRadioButtonGroup = new QButtonGroup(this);
+	checkOptionRadioButtonGroup->addButton(ui->radioButton_PhotoSrc, 0);
+	checkOptionRadioButtonGroup->addButton(ui->radioButton_PhotoSrcWarp, 1);
+	checkOptionRadioButtonGroup->addButton(ui->radioButton_PhotoSrcLight, 2);
+	checkOptionRadioButtonGroup->addButton(ui->radioButton_PhotoRst, 3);
+	connect(checkOptionRadioButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(on_checkRadioButtonGroup_Clicked(int)));
+
 	//调试使用过的。
 
 #if 0
@@ -158,6 +171,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
 
 	imgAlm = new ImageAlgorithm(globalVar.ScreenWidth,globalVar.ScreenHeight);
+	globalVar.photoFileManager.setMainPath(globalVar.WorkPath);
 }
 void MainWindow::loadStyleSheet(const QString &styleSheetFile)
 {
@@ -209,6 +223,7 @@ void MainWindow::setAllConfigValue()
 	ui->checkBox_OfflineTest->setChecked(globalVar.isOfflineTest);
 	ui->lineEdit_FirstGL->setText(QString::number(globalVar.firstGL));
 	ui->lineEdit_SecondGL->setText(QString::number(globalVar.secondGL));
+	ui->lineEdit_WorkPath->setText(globalVar.WorkPath);
 }
 
 void MainWindow::getAllConfigValueToGlobal()
@@ -235,6 +250,8 @@ void MainWindow::getAllConfigValueToGlobal()
 	globalVar.isAutodeleteLocalPhoto = ui->checkBox_AutoDeleteLocalPhoto->isChecked();
 	globalVar.firstGL = ui->lineEdit_FirstGL->text().toInt();
 	globalVar.secondGL = ui->lineEdit_SecondGL->text().toInt();
+	globalVar.WorkPath = ui->lineEdit_WorkPath->text();
+	globalVar.photoFileManager.setMainPath(globalVar.WorkPath);
 }
 
 void MainWindow::setPhotoStatus()
@@ -363,7 +380,7 @@ void MainWindow::on_lineEdit_Aperture_editingFinished()
 
 void MainWindow::on_dial_brightness_sliderMoved(int position)
 {
-    ui->lineEdit_brightness->setText(QString::number(position));
+    //ui->lineEdit_brightness->setText(QString::number(position));
 }
 
 void MainWindow::on_pushButton_ConnectCamera_clicked()
@@ -465,8 +482,7 @@ void setColor(QColor &color, int r, int g, int b) {
 }
 void MainWindow::on_colorRdoGroup_check(int id, bool isChecked)
 {
-	uchar value = ui->lineEdit_brightness->text().toUInt();
-
+	uchar value = ui->spinBox_GL->value();
 	switch (id) {
 	case 0:
 		setColor(*sndColor, value, 0, 0);
@@ -490,10 +506,9 @@ void MainWindow::on_colorRdoGroup_check(int id, bool isChecked)
 	if (isChecked)this->client->sendShowColor(*sndColor);
 }
 
-void MainWindow::on_lineEdit_brightness_textChanged(QString)
+void MainWindow::on_SpinBox_changed_textChanged(int value)
 {
 	int id = colorRdoGroup->checkedId();
-	uchar value = ui->lineEdit_brightness->text().toUInt();
 
 	switch (id) {
 	case 0:
@@ -763,8 +778,11 @@ void MainWindow::on_pushButton_analysis_Clicked()
 	markpoints.x4 = temp.cols*globalVar.markPointFacxRD;
 	markpoints.y4 = temp.rows*globalVar.markPointFacyRD;
 	temp.release();
+	//一次完整的流程设置一个时间mark。
+	globalVar.photoFileManager.setDateTime(QDateTime::currentDateTime());
 	imgAlm->setCoreResolution(globalVar.ScreenWidth, globalVar.ScreenHeight);
 	imgAlm-> CalcFacsFromSixPic(fnames, markpoints,globalVar.firstGL,globalVar.secondGL, facsArray);
+
 	QPoint pos(ui->pushButton_CalibrationResult->width() / 2,  ui->pushButton_CalibrationResult->height() / 2);
 	QMouseEvent event0(QEvent::MouseButtonPress, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 	QApplication::sendEvent(ui->pushButton_CalibrationResult, &event0);
@@ -777,3 +795,35 @@ void MainWindow::on_pushButton_analysis_Clicked()
 	//ImageAlgorithm::GL_compensation(lightData, COLS, ROWS, 100, 2.8, globalVar.arrayW, target);
 }
 
+
+void MainWindow::on_pushButton_Scan_clicked()
+{
+	QString path=QFileDialog::getExistingDirectory(this,"选择工作目录",globalVar.WorkPath);
+	ui->lineEdit_WorkPath->setText(path);
+}
+
+void MainWindow::on_checkRadioButtonGroup_Clicked(int id)
+{
+	QString fname=globalVar.photoFileManager.getPhotoFileName((PhotoRGB)checkColorRadioButtonGroup->checkedId(), (PhotoFileManager::PhotoFileType)checkOptionRadioButtonGroup->checkedId());
+	if (QFile(fname).exists()) {
+
+		if (checkOptionRadioButtonGroup->checkedId() == 0) {
+			qDebug() << "读取bmp失败" << endl;
+			Mat m = imread(fname.toStdString());
+			QImage *img = new QImage(m.data, m.cols, m.rows, QImage::Format_RGB888);
+			pixmap3 = new QPixmap(QPixmap::fromImage(*img));
+			ui->pictureBox_ResultShow->setPixmap(pixmap3);
+			ui->pictureBox_ResultShow->update();
+			delete img;
+			m.release();
+
+		}
+		if (checkOptionRadioButtonGroup->checkedId() == 1) {
+
+			pixmap3 = new QPixmap(fname);
+			ui->pictureBox_ResultShow->setPixmap(pixmap3);
+			ui->pictureBox_ResultShow->update();
+		}
+
+	}
+}

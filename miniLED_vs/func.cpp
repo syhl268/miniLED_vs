@@ -11,6 +11,7 @@
 #include <math.h>
 #include <opencv2/core.hpp>
 #include "globalvar.h"
+#include "PhotoFileManager.h"
 using namespace std;
 using namespace cv;
 
@@ -626,7 +627,7 @@ BYTE* ImageSC(int srcPicWidth, int srcPicHeight, BYTE* srcPicData, MarkPoints ma
 
 	//Point3 dotMatrix[30][80] = { init };
 	//dotDetect(qq, 1, dotMatrix);
-	////dotDetect(qq.t(), 0, dotMatrix);
+	//dotDetect(qq.t(), 0, dotMatrix);
 	//Point3 dstDotMatrix[30][80] = { init };
 	//sortEveryRow(dotMatrix, dstDotMatrix, Size(3830, 1470));
 
@@ -1078,6 +1079,39 @@ BYTE* Analysis_2(char* markPic, int srcPicWidth, int srcPicHeight, BYTE* srcPicD
 	imwrite(string(saveFNameLocal) + ".jpg", cc);
 	return ls;
 }
+//CvSize cvsize; cvsize.width = 2 * 80; cvsize.height = 2*30;
+//IplImage* uu = cvCreateImage(cvsize, IPL_DEPTH_8U, 3);
+//Mat mhist = cvarrToMat(uu);
+//int res[30][80] = { 0 };
+//for (int i = 0; i < 30; i++){
+//	for (int j = 0; j < 80; j++){
+//		res[i][j] = sum(qq(Rect(dstDotMatrix[i][j].LT, dstDotMatrix[i][j].RB)))(0);
+//		Scalar rectColor = getColor(0, 40000, res[i][j]);
+//		//Scalar rectColor = getColor(0, 255, (int)qq.at<Vec3b>(dstDotMatrix[i][j].Center)[0]);
+//		rectangle(mhist, Rect(j * 2, i * 2, 2, 2), rectColor);
+
+//	}
+//}
+Mat & colormap(int * light, int width, int height, int lightMax)
+{
+	if (lightMax==0) {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (lightMax < light[j + i*width])lightMax = light[j + i*width];
+			}
+		}
+	}
+	CvSize cvsize(2 * width, 2 * height);
+	IplImage *uu = cvCreateImage(cvsize, IPL_DEPTH_8U, 3);
+	Mat mhist = cvarrToMat(uu);
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			Scalar rectColor(getColor(0, lightMax, light[j+i*width]));
+			rectangle(mhist, Rect(j * 2, i * 2, 2, 2), rectColor);
+		}
+	}
+	return mhist;
+}
 
 void getLightSum(string fname, MarkPoints markpoints,int *lightSum)
 {
@@ -1162,6 +1196,91 @@ void getLightSum(string fname, MarkPoints markpoints,int *lightSum)
 	}
 	delete[] dotMatrix;
 	delete [] dstDotMatrix;
+}
+
+AOIAPI void getLightSum_AutoSave(string fname, MarkPoints markpoints, int * lightSum, PhotoRGB prgb)
+{
+	Mat aa = imread(fname);
+	Point2f srcCorner[4] = { Point2f(markpoints.x4, markpoints.y4), Point2f(markpoints.x3, markpoints.y3), Point2f(markpoints.x1, markpoints.y1), Point2f(markpoints.x2, markpoints.y2) };
+
+	Size picSize;
+	picSize.width = sqrt((srcCorner[0].x - srcCorner[1].x)*(srcCorner[0].x - srcCorner[1].x) + (srcCorner[0].y - srcCorner[1].y)*(srcCorner[0].y - srcCorner[1].y));
+	picSize.height = sqrt((srcCorner[2].x - srcCorner[1].x)*(srcCorner[2].x - srcCorner[1].x) + (srcCorner[2].y - srcCorner[1].y)*(srcCorner[2].y - srcCorner[1].y));
+
+	picSize = picSize + Size(picSize.width / (resolution.width - 1), picSize.height / (resolution.height - 1));
+
+	srcCorner[0] = srcCorner[0] + Point2f(picSize.width / (2 * (resolution.width - 1)), picSize.height / (2 * (resolution.height - 1)));
+	srcCorner[1] = srcCorner[1] + Point2f(-picSize.width / (2 * (resolution.width - 1)), picSize.height / (2 * (resolution.height - 1)));
+	srcCorner[2] = srcCorner[2] + Point2f(-picSize.width / (2 * (resolution.width - 1)), -picSize.height / (2 * (resolution.height - 1)));
+	srcCorner[3] = srcCorner[3] + Point2f(picSize.width / (2 * (resolution.width - 1)), -picSize.height / (2 * (resolution.height - 1)));
+
+	Point2f dstCorner[4] = { Point2f(picSize.width, picSize.height), Point2f(0, picSize.height), Point2f(0, 0), Point2f(picSize.width, 0) };
+
+	Point3 init;
+	init.LT = Point(0, 0);
+	init.Center = Point(0, 0);
+	init.RB = Point(0, 0);
+
+
+	Mat H33(3, 3, CV_32FC1);
+	H33 = getPerspectiveTransform(srcCorner, dstCorner);
+	//mat构造来自C#的数据。BGR8格式
+#ifdef __PHOTOFILEMANAGER__
+	globalVar.photoFileManager.saveMatToPath(aa, prgb, PhotoFileManager::PHOTO_SRC);
+#endif
+	//for (int i = 0; i < srcPicHeight; i++){
+	//	for (int j = 0; j < srcPicWidth; j++){
+	//		aa.at<Vec3b >(i, j) = aa.at<Vec3b>(i, j) / fac[i][j];
+	//		
+	//	}
+	//}
+	//imwrite(string(saveFNameLocal) + "FFC.bmp", aa);
+	//GaussianBlur(aa, aa, Size(5, 15), 0.5);
+	Mat qq = Mat::zeros(aa.size(), aa.type());
+	warpPerspective(aa, qq, H33, picSize);
+#ifdef __PHOTOFILEMANAGER__
+	globalVar.photoFileManager.saveMatToPath(qq, prgb, PhotoFileManager::PHOTO_SRC_WARP);
+#endif
+	Point3** dotMatrix;
+	dotMatrix = new Point3*[resolution.height];
+	//dotMatrix = (Point3**)malloc(sizeof(Point3*)*resolution.height);
+	for (int i = 0; i < resolution.height; i++)
+		//dotMatrix[i] = (Point3*)malloc(sizeof(Point3)*resolution.width);
+		dotMatrix[i] = new Point3[resolution.width];
+	for (int i = 0; i < resolution.height; i++)
+		for (int j = 0; j < resolution.width; j++)
+			dotMatrix[i][j] = init;
+
+
+	Point3** dstDotMatrix;
+	//dstDotMatrix = (Point3**)malloc(sizeof(Point3*)*resolution.height);
+	dstDotMatrix = new Point3*[resolution.height];
+	for (int i = 0; i < resolution.height; i++)
+		//dstDotMatrix[i] = (Point3*)malloc(sizeof(Point3)*resolution.width);
+		dstDotMatrix[i] = new Point3[resolution.width];
+	for (int i = 0; i < resolution.height; i++)
+		for (int j = 0; j < resolution.width; j++)
+			dstDotMatrix[i][j] = init;
+
+	dotDetect(qq, 1, dotMatrix, resolution);
+	//dotDetect(qq.t(), 0, dotMatrix);
+	//Point3 dstDotMatrix[30][80] = { init };
+	sortEveryRow(dotMatrix, dstDotMatrix, picSize, resolution);
+	ofstream outfile("Light.csv");
+	for (int i = 0; i < resolution.height; i++) {
+		for (int j = 0; j < resolution.width; j++) {
+			lightSum[j + i*resolution.width] = sum(qq(Rect(dstDotMatrix[i][j].LT, dstDotMatrix[i][j].RB)))(0);
+			outfile << lightSum[j + i*resolution.width] << ",";
+		}
+		outfile << endl;
+	}
+	outfile.close();
+	for (int i = 0; i < resolution.height; i++) {
+		delete[] dotMatrix[i];
+		delete[] dstDotMatrix[i];
+	}
+	delete[] dotMatrix;
+	delete[] dstDotMatrix;
 }
 
 

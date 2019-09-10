@@ -18,6 +18,13 @@ public:
 	void setIsDrawMarkPoints(bool isdraw) {
 		this->isDrawMarkPoint = isdraw;
 	}
+
+	signals:
+	void mouseMoved(QMouseEvent *event);
+	void mousePressed(QMouseEvent *event);
+	void mouseReleased(QMouseEvent *event);
+
+
 protected:
 
 	virtual void paintEvent(QPaintEvent *event) override;

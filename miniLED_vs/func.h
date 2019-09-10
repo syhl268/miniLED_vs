@@ -1,6 +1,8 @@
 #pragma once
 #include<iostream>
 #include<opencv2\opencv.hpp>
+#include"globalvar.h"
+
 using namespace cv;
 using namespace std;
 #define AOIAPI extern "C" __declspec(dllexport)
@@ -68,5 +70,9 @@ AOIAPI BYTE* ImageSC(int srcPicWidth, int srcPicHeight, BYTE* srcPicData, MarkPo
 AOIAPI int* statistic(BYTE* srcdata, int srcwidth, int srcheight);
 AOIAPI Scalar getColor(int min, int max, int current);
 AOIAPI Scalar getColor_1(int min, int max, int current);
-
+//lightMax=0,由程序自动计算light的最大值，最小值为0.
+AOIAPI Mat& colormap(int* light, int width, int height,int lightMax=0);
 AOIAPI void getLightSum(string, MarkPoints markpoints, int *lightSum);
+#ifdef __PHOTOFILEMANAGER__
+AOIAPI void getLightSum_AutoSave(string, MarkPoints markpoints, int *lightSum,PhotoRGB prgb);
+#endif
