@@ -1,8 +1,8 @@
 Proto=TCP
 Ip=127.0.0.1
 Port=8081
-ScreenWidth=160
-ScreenHeight=90
+ScreenWidth=170
+ScreenHeight=110
 BoxWidth=0
 BoxHeight=0
 ModuleWidth=0

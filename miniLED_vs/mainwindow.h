@@ -16,7 +16,7 @@
 #include <QItemSelectionModel>
 #include <QProgressDialog>
 #include "imageAlgorithm.h"
-
+#include "qcolorcali.h"
 
 void mCameraCallback(byte* imgData,int width,int height);
 namespace Ui {
@@ -93,7 +93,7 @@ private slots:
 
 	void on_checkRadioButtonGroup_Clicked(int id);
 
-
+	void on_MenuBar_toggled(QAction *action);
 
 private:
     Ui::MainWindow *ui;
@@ -118,6 +118,11 @@ private:
 	QProgressDialog *progressDialog;
 	//À„∑®∂‘œÛ°£
 	ImageAlgorithm *imgAlm;
+
+	QColorCali* colorCali;
+
+	void init();
+	void del();
 };
 
 #endif // MAINWINDOW_H

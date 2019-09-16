@@ -25,5 +25,6 @@
         <file>pic/slider_index.png</file>
         <file>pic/addpage.png</file>
         <file>pic/subpage.png</file>
+        <file>pic/a.png</file>
     </qresource>
 </RCC>

@@ -12,6 +12,7 @@ class GlobalVar : public QObject
 public:
 	GlobalVar(QObject *parent=NULL,QString fileName="config.txt");
 	~GlobalVar();
+	void init();
 	QString Proto;
 	QString Ip, WorkPath;
 	int Port;

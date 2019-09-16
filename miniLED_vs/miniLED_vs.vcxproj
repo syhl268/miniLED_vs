@@ -134,6 +134,7 @@
     <ClCompile Include="mytablemodel.cpp" />
     <ClCompile Include="PhotoFileManager.cpp" />
     <ClCompile Include="pixitem.cpp" />
+    <ClCompile Include="qcolorcali.cpp" />
     <ClCompile Include="qmytableview.cpp" />
     <ClCompile Include="qpicturebox.cpp" />
     <ClCompile Include="showpartitionorcamera.cpp" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="mainwindow.ui" />
+    <QtUic Include="qcolorcali.ui" />
     <QtUic Include="qmytableview.ui" />
     <QtUic Include="qscaletableview.ui" />
     <QtUic Include="qtguiclass.ui" />
@@ -171,6 +173,10 @@
     </QtMoc>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <ClInclude Include="PhotoFileManager.h" />
+    <QtMoc Include="qcolorcali.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
     <ClInclude Include="Util.h" />
     <QtMoc Include="showpartitionorcamera.h" />
     <QtMoc Include="direselector.h" />

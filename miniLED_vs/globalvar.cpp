@@ -14,6 +14,44 @@ int GlobalVar::ScreenHeight = 270;
 int GlobalVar::
 */
 #define _T(x) ""#x
+void GlobalVar::init()
+{
+	//ip地址、通信协议修改：网络重新初始化
+
+	//屏幕ScreenWidth,ScreenHeight,BoxWidth,BoxHeight,ModuleWidth,ModuleHeight修改：
+	//arrayRK,arrayGK,arrayBK,arrayRB,arrayGB,arrayBB都需要重新申请内存。
+	if (arrayRK != nullptr)delete[] arrayRK;
+	if (arrayGK != nullptr)delete[] arrayGK;
+	if (arrayBK != nullptr)delete[] arrayBK;
+	if (arrayRB != nullptr)delete[] arrayRB;
+	if (arrayGB != nullptr)delete[] arrayGB;
+	if (arrayBB != nullptr)delete[] arrayBB;
+	arrayRK = arrayGK = arrayBK = arrayRB = arrayGB = arrayBB = nullptr;
+	arrayRK = new float[ScreenWidth*ScreenHeight];
+	arrayGK = new float[ScreenWidth*ScreenHeight];
+	arrayBK = new float[ScreenWidth*ScreenHeight];
+	arrayRB = new float[ScreenWidth*ScreenHeight];
+	arrayGB = new float[ScreenWidth*ScreenHeight];
+	arrayBB = new float[ScreenWidth*ScreenHeight];
+	for (int i = 0; i < ScreenWidth*ScreenHeight; i++) {
+		arrayRK[i] = 0.0;
+		arrayRB[i] = 0.0;
+		arrayGK[i] = 0.0;
+		arrayGB[i] = 0.0;
+		arrayBK[i] = 0.0;
+		arrayBB[i] = 0.0;
+	}
+	//originLight,realLight需要重新申请内存。
+	for (int i = 0; i < 6; i++) {
+		if (originLight[i] != nullptr)delete[] originLight[i];
+		if (realLight[i] != nullptr)delete[] realLight[i];
+		originLight[i] = nullptr;
+		realLight[i] = nullptr;
+		originLight[i] = new int[ScreenWidth*ScreenHeight];
+		realLight[i] = new float[ScreenWidth*ScreenHeight];
+	}
+
+}
 GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	: QObject(parent)
 {
@@ -43,43 +81,13 @@ GlobalVar::GlobalVar(QObject *parent,QString fileName)
 	}
 	//mura系数不能从config.txt文件中读出来，只能从修正数据文件中读出
 	//先实现为给初始化
-	arrayRK = new float[ScreenWidth*ScreenHeight];
-	arrayGK = new float[ScreenWidth*ScreenHeight];
-	arrayBK = new float[ScreenWidth*ScreenHeight];
-	arrayRB = new float[ScreenWidth*ScreenHeight];
-	arrayGB = new float[ScreenWidth*ScreenHeight];
-	arrayBB = new float[ScreenWidth*ScreenHeight];
-	for (int i = 0; i < ScreenWidth*ScreenHeight; i++) {
-		arrayRK[i] = 0.0;
-		arrayRB[i] = 0.0;
-		arrayGK[i] = 0.0;
-		arrayGB[i] = 0.0;
-		arrayBK[i] = 0.0;
-		arrayBB[i] = 0.0;
-	}
+	init();
 	firstGL = 100;
 	secondGL = 80;
-	//originLightB1 = new int[ScreenWidth*ScreenHeight];
-	//originLightB2 = new int[ScreenWidth*ScreenHeight];
-	//originLightG1 = new int[ScreenWidth*ScreenHeight];
-	//originLightG2 = new int[ScreenWidth*ScreenHeight];
-	//originLightR1 = new int[ScreenWidth*ScreenHeight];
-	//originLightR2 = new int[ScreenWidth*ScreenHeight];
-	//realLightB1 = new float[ScreenWidth*ScreenHeight];
-	//realLightB2 = new float[ScreenWidth*ScreenHeight];
-	//realLightG1 = new float[ScreenWidth*ScreenHeight];
-	//realLightG2 = new float[ScreenWidth*ScreenHeight];
-	//realLightR1 = new float[ScreenWidth*ScreenHeight];
-	//realLightR2 = new float[ScreenWidth*ScreenHeight];
-
 	facrgb = FACRK;
 	fackind = K;
 	photorgb = R1;
 	isConnectCameraSuccess = false;
-	for (int i = 0; i < 6; i++) {
-		originLight[i] = new int[ScreenWidth*ScreenHeight];
-		realLight[i] = new float[ScreenWidth*ScreenHeight];
-	}
 }
 
 GlobalVar::~GlobalVar()

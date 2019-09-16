@@ -44,6 +44,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *action;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout;
@@ -301,6 +302,8 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(1281, 713);
+        action = new QAction(MainWindow);
+        action->setObjectName(QStringLiteral("action"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_2 = new QVBoxLayout(centralWidget);
@@ -1492,7 +1495,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 260, 547));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 175, 374));
         verticalLayout_20 = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout_20->setSpacing(6);
         verticalLayout_20->setContentsMargins(11, 11, 11, 11);
@@ -1647,7 +1650,7 @@ public:
         scrollArea_2->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 937, 71));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 422, 38));
         horizontalLayout_9 = new QHBoxLayout(scrollAreaWidgetContents_2);
         horizontalLayout_9->setSpacing(6);
         horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
@@ -1958,6 +1961,7 @@ public:
         menuBar->addAction(menu_2->menuAction());
         menuBar->addAction(menu_3->menuAction());
         menuBar->addAction(menu_4->menuAction());
+        menu_4->addAction(action);
 
         retranslateUi(MainWindow);
         QObject::connect(lineEdit_CurValue, SIGNAL(returnPressed()), MainWindow, SLOT(on_LineEdit_CurValue_Edited()));
@@ -1965,8 +1969,9 @@ public:
         QObject::connect(pushButton_Cancel, SIGNAL(clicked()), MainWindow, SLOT(on_pushButton_Cancel_clicked()));
         QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindow, SLOT(on_pushButton_snap_Clicked()));
         QObject::connect(spinBox_GL, SIGNAL(valueChanged(int)), MainWindow, SLOT(on_SpinBox_changed_textChanged(int)));
+        QObject::connect(menuBar, SIGNAL(triggered(QAction*)), MainWindow, SLOT(on_MenuBar_toggled(QAction*)));
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(4);
         comboBox_SelectConnectWay->setCurrentIndex(0);
         stackedWidget_ConnectWay->setCurrentIndex(0);
         tabWidget->setCurrentIndex(0);
@@ -1978,6 +1983,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\347\256\261\344\275\223\346\240\241\346\255\243", Q_NULLPTR));
+        action->setText(QApplication::translate("MainWindow", "\350\211\262\345\272\246\346\240\241\346\255\243", Q_NULLPTR));
         pushButton_ParameterSet->setText(QApplication::translate("MainWindow", "\345\217\202\346\225\260\350\256\276\347\275\256", Q_NULLPTR));
         pushButton_CameraCalibration->setText(QApplication::translate("MainWindow", "\347\233\270\346\234\272\346\240\241\346\255\243", Q_NULLPTR));
         pushButton_PickPicture->setText(QApplication::translate("MainWindow", "\351\207\207\351\233\206\345\233\276\347\211\207", Q_NULLPTR));

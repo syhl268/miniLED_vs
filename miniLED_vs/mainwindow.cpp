@@ -25,6 +25,14 @@ bool isSnap = false;
 
 QPictureBox *picBox_Show, *picBox_Capture;
 
+void MainWindow::init()
+{
+	myModel = new MyTableModel(this, QColor(255, 0, 0), globalVar.ScreenWidth, globalVar.ScreenHeight, globalVar.arrayRK);
+	selectModle = new QItemSelectionModel(myModel);
+	bool isCon = connect(selectModle, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(on_tableView_CurrentChanged(QModelIndex, QModelIndex)));
+	ui->tableView_everyPoint->setModel(this->myModel);
+	ui->tableView_everyPoint->setSelectionModel(this->selectModle);
+}
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -156,10 +164,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->arrayW = new float[globalVar.ScreenWidth*globalVar.ScreenHeight];
 	for (int i = 0; i < globalVar.ScreenWidth*globalVar.ScreenHeight; i++) { arrayR[i] = 1.0; arrayG[i] = 1.0;arrayB[i] = 1.0;arrayW[i] = 1.0;	}
 #endif
+	/*
 	myModel = new MyTableModel(this,QColor(255,0,0),globalVar.ScreenWidth,globalVar.ScreenHeight,globalVar.arrayRK);
 	selectModle = new QItemSelectionModel(myModel);
 	bool isCon=connect(selectModle, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(on_tableView_CurrentChanged(QModelIndex, QModelIndex)));
-	qDebug() << ui->pushButton_Red->isCheckable();
+	ui->tableView_everyPoint->setModel(this->myModel);
+	ui->tableView_everyPoint->setSelectionModel(this->selectModle);
+	*/
+	init();
 	//调试算法时使用过的
 #if 0
 	qDebug() << isCon << endl;
@@ -172,6 +184,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	imgAlm = new ImageAlgorithm(globalVar.ScreenWidth,globalVar.ScreenHeight);
 	globalVar.photoFileManager.setMainPath(globalVar.WorkPath);
+	colorCali = new QColorCali(this);
+	
 }
 void MainWindow::loadStyleSheet(const QString &styleSheetFile)
 {
@@ -252,6 +266,8 @@ void MainWindow::getAllConfigValueToGlobal()
 	globalVar.secondGL = ui->lineEdit_SecondGL->text().toInt();
 	globalVar.WorkPath = ui->lineEdit_WorkPath->text();
 	globalVar.photoFileManager.setMainPath(globalVar.WorkPath);
+
+
 }
 
 void MainWindow::setPhotoStatus()
@@ -348,8 +364,6 @@ void MainWindow::on_pushButton_PointsCalibration_clicked()
 
 	if (firstDrawTable) {
 
-		ui->tableView_everyPoint->setModel(this->myModel);
-		ui->tableView_everyPoint->setSelectionModel(this->selectModle);
 		firstDrawTable = false;
 	}
 
@@ -470,7 +484,8 @@ void MainWindow::on_lineEdit_ExposureTime_returnPressed()
 void MainWindow::on_pushButton_Confirm_clicked()
 {
 	getAllConfigValueToGlobal();
-
+	globalVar.init();
+	this->init();
 }
 void MainWindow::on_pushButton_Cancel_clicked()
 {
@@ -826,4 +841,17 @@ void MainWindow::on_checkRadioButtonGroup_Clicked(int id)
 		}
 
 	}
+}
+
+void MainWindow::on_MenuBar_toggled(QAction * action)
+{
+	QString actionText = action->text();
+	if (actionText == "色度校正") {
+		colorCali->show();
+	}
+}
+
+
+void MainWindow::del()
+{
 }

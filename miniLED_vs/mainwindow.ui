@@ -164,7 +164,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,3">
@@ -2508,8 +2508,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>260</width>
-                <height>547</height>
+                <width>175</width>
+                <height>374</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -2720,8 +2720,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>937</width>
-                   <height>71</height>
+                   <width>422</width>
+                   <height>38</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -3297,6 +3297,7 @@
     <property name="title">
      <string>工具</string>
     </property>
+    <addaction name="action"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -3304,6 +3305,11 @@
    <addaction name="menu_4"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action">
+   <property name="text">
+    <string>色度校正</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -3341,8 +3347,8 @@
    <slot>on_pushButton_Confirm_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>673</x>
-     <y>634</y>
+     <x>117</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
      <x>185</x>
@@ -3357,8 +3363,8 @@
    <slot>on_pushButton_Cancel_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>754</x>
-     <y>634</y>
+     <x>117</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
      <x>733</x>
@@ -3373,8 +3379,8 @@
    <slot>on_pushButton_snap_Clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>126</x>
-     <y>168</y>
+     <x>108</x>
+     <y>126</y>
     </hint>
     <hint type="destinationlabel">
      <x>189</x>
@@ -3389,12 +3395,28 @@
    <slot>on_SpinBox_changed_textChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>227</x>
-     <y>524</y>
+     <x>118</x>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
      <y>589</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menuBar</sender>
+   <signal>triggered(QAction*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_MenuBar_toggled(QAction*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>284</x>
+     <y>8</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>205</y>
     </hint>
    </hints>
   </connection>
@@ -3407,5 +3429,6 @@
   <slot>on_pushButton_analysis_Clicked()</slot>
   <slot>on_SpinBox_changed_textChanged(int)</slot>
   <slot>on_pushButton_Scan_clicked()</slot>
+  <slot>on_MenuBar_toggled(QAction*)</slot>
  </slots>
 </ui>
